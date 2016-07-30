@@ -1,6 +1,10 @@
-﻿using PoGo.NecroBot.Logic.State;
-using PoGo.NecroBot.Logic.Tasks;
+﻿#region using directives
+
 using System.Threading;
+using PoGo.NecroBot.Logic.State;
+using PoGo.NecroBot.Logic.Tasks;
+
+#endregion
 
 namespace PoGo.NecroBot.Logic.Service
 {
@@ -22,33 +26,49 @@ namespace PoGo.NecroBot.Logic.Service
         {
             if (_session.LogicSettings.TransferDuplicatePokemon)
             {
+<<<<<<< HEAD
                 TransferDuplicatePokemonTask.Execute(_session, cancellationToken).Wait();
             }
 
             if (_session.LogicSettings.EvolveAllPokemonAboveIv || _session.LogicSettings.EvolveAllPokemonWithEnoughCandy)
             {
                 EvolvePokemonTask.Execute(_session, cancellationToken).Wait();
+=======
+                EvolvePokemonTask.Execute(_session, cancellationToken).Wait(cancellationToken);
             }
-
-            if (_session.LogicSettings.RenameAboveIv)
+            if (_session.LogicSettings.AutomaticallyLevelUpPokemon)
             {
-                RenamePokemonTask.Execute(_session, cancellationToken).Wait();
+                LevelUpPokemonTask.Execute(_session, cancellationToken).Wait(cancellationToken);
+            }
+            if (_session.LogicSettings.TransferDuplicatePokemon)
+            {
+                TransferDuplicatePokemonTask.Execute(_session, cancellationToken).Wait(cancellationToken);
+>>>>>>> refs/remotes/upstream/master
             }
 
-            RecycleItemsTask.Execute(_session, cancellationToken).Wait();
+            if (_session.LogicSettings.RenamePokemon)
+            {
+                RenamePokemonTask.Execute(_session, cancellationToken).Wait(cancellationToken);
+            }
+
+            RecycleItemsTask.Execute(_session, cancellationToken).Wait(cancellationToken);
 
             if (_session.LogicSettings.UseEggIncubators)
             {
-                UseIncubatorsTask.Execute(_session, cancellationToken).Wait();
+                UseIncubatorsTask.Execute(_session, cancellationToken).Wait(cancellationToken);
             }
 
             if (_session.LogicSettings.UseGpxPathing)
             {
-                FarmPokestopsGpxTask.Execute(_session, cancellationToken).Wait();
+                FarmPokestopsGpxTask.Execute(_session, cancellationToken).Wait(cancellationToken);
             }
             else
             {
+<<<<<<< HEAD
                 FarmPokestopsTask.ExeCuteMyFarm(_session, cancellationToken).Wait();
+=======
+                FarmPokestopsTask.Execute(_session, cancellationToken).Wait(cancellationToken);
+>>>>>>> refs/remotes/upstream/master
             }
         }
     }

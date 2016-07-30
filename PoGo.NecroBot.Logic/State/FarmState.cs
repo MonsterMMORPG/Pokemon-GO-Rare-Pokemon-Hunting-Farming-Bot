@@ -21,8 +21,11 @@ namespace PoGo.NecroBot.Logic.State
             {
                 await EvolvePokemonTask.Execute(session, cancellationToken);
             }
-
-            if (session.LogicSettings.RenameAboveIv)
+            if (session.LogicSettings.AutomaticallyLevelUpPokemon)
+            {
+                await LevelUpPokemonTask.Execute(session, cancellationToken);
+            }
+            if (session.LogicSettings.RenamePokemon)
             {
                 await RenamePokemonTask.Execute(session, cancellationToken);
             }
