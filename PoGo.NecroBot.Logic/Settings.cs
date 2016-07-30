@@ -10,12 +10,11 @@ using PokemonGo.RocketAPI;
 using PokemonGo.RocketAPI.Enums;
 using POGOProtos.Enums;
 using POGOProtos.Inventory.Item;
-<<<<<<< HEAD
+
 using PoGo.NecroBot.Logic.Logging;
 using System.Linq;
-=======
 
->>>>>>> refs/remotes/upstream/master
+
 #endregion
 
 namespace PoGo.NecroBot.Logic
@@ -53,11 +52,7 @@ namespace PoGo.NecroBot.Logic
                     Save(_filePath);
                 }
             }
-<<<<<<< HEAD
-            catch (Newtonsoft.Json.JsonReaderException exception)
-=======
             catch (JsonReaderException exception)
->>>>>>> refs/remotes/upstream/master
             {
                 if (exception.Message.Contains("Unexpected character") && exception.Message.Contains("PtcUsername"))
                     Logger.Write("JSON Exception: You need to properly configure your PtcUsername using quotations.",
@@ -106,66 +101,6 @@ namespace PoGo.NecroBot.Logic
 
     public class GlobalSettings
     {
-        public int AmountOfPokemonToDisplayOnStart = 10;
-
-        [JsonIgnore] internal AuthSettings Auth = new AuthSettings();
-
-        public bool AutomaticallyLevelUpPokemon = false;
-
-        public bool AutoUpdate = false;
-        public double DefaultAltitude = 10;
-<<<<<<< HEAD
-        public double DefaultLatitude = 36.80204;
-        public double DefaultLongitude = 34.63328;
-        public int DelayBetweenPokemonCatch = 2000;
-        public int DelayBetweenPlayerActions = 5000;
-        public float EvolveAboveIvValue = 50;
-=======
-        public double DefaultLatitude = 40.785091;
-        public double DefaultLongitude = -73.968285;
-        public int DelayBetweenPlayerActions = 5000;
-        public int DelayBetweenPokemonCatch = 2000;
-        public bool DumpPokemonStats = false;
-        public float EvolveAboveIvValue = 95;
->>>>>>> refs/remotes/upstream/master
-        public bool EvolveAllPokemonAboveIv = false;
-        public bool EvolveAllPokemonWithEnoughCandy = true;
-
-        [JsonIgnore] public string GeneralConfigPath;
-
-        public string GpxFile = "GPXPath.GPX";
-<<<<<<< HEAD
-        public bool UseGpxPathing = false;
-        public double WalkingSpeedInKilometerPerHour = 130;
-        public int MaxTravelDistanceInMeters = 10000;
-        public int KeepMinCp = 5000;
-        public int KeepMinDuplicatePokemon = 2;
-        public float KeepMinIvPercentage = 95;
-        public bool KeepPokemonsThatCanEvolve = false;
-        public bool PrioritizeIvOverCp = true;
-        public bool RenameAboveIv = false;
-        public string RenameTemplate = "{1}_{0}";
-        public bool TransferDuplicatePokemon = true;
-        public string TranslationLanguageCode = "en";
-        public bool UsePokemonToNotCatchFilter = false;
-        public int WebSocketPort = 14251;
-        public bool StartupWelcomeDelay = false;
-        public bool SnipeAtPokestops = false;
-        public int MinPokeballsToSnipe = 20;
-        public string SnipeLocationServer = "localhost";
-        public int SnipeLocationServerPort = 16969;
-        public bool UseSnipeLocationServer = false;
-        public bool UseTransferIVForSnipe = false;
-        public bool SnipeIgnoreUnknownIV = false;
-        public int MinDelayBetweenSnipes = 20000;
-        public int TotalAmountOfPokebalsToKeep = 1500;
-        public int TotalAmountOfPotionsToKeep = 1000;
-        public int TotalAmountOfRevivesToKeep = 500;
-        public int irPowerUpPerfectionIV = 90;
-=======
->>>>>>> refs/remotes/upstream/master
-
-
         public List<KeyValuePair<ItemId, int>> ItemRecycleFilter = new List<KeyValuePair<ItemId, int>>
         {
             new KeyValuePair<ItemId, int>(ItemId.ItemUnknown, 0),
@@ -200,22 +135,9 @@ namespace PoGo.NecroBot.Logic
             new KeyValuePair<ItemId, int>(ItemId.ItemItemStorageUpgrade, 100)
         };
 
-        public int KeepMinCp = 1250;
-        public int KeepMinDuplicatePokemon = 1;
-        public float KeepMinIvPercentage = 90;
-        public bool KeepPokemonsThatCanEvolve = false;
-        public string LevelUpByCPorIv = "iv";
-        public int MaxPokeballsPerPokemon = 6;
-        public int MaxSpawnLocationOffset = 10;
-        public int MaxTravelDistanceInMeters = 1000;
-        public int MinDelayBetweenSnipes = 60000;
-        public int MinPokeballsToSnipe = 20;
-        public int MinPokeballsWhileSnipe = 0;
-
         public List<PokemonId> PokemonsNotToTransfer = new List<PokemonId>
         {
-<<<<<<< HEAD
-            //PokemonId.Aerodactyl,
+            ////criteria: from SS Tier to A Tier + Regional Exclusive
             //PokemonId.Venusaur,
             //PokemonId.Charizard,
             //PokemonId.Blastoise,
@@ -223,71 +145,35 @@ namespace PoGo.NecroBot.Logic
             //PokemonId.Nidoking,
             //PokemonId.Clefable,
             //PokemonId.Vileplume,
+            ////PokemonId.Golduck,
             //PokemonId.Arcanine,
             //PokemonId.Poliwrath,
             //PokemonId.Machamp,
             //PokemonId.Victreebel,
             //PokemonId.Golem,
             //PokemonId.Slowbro,
-            //PokemonId.Farfetchd,
+            ////PokemonId.Farfetchd,
             //PokemonId.Muk,
             //PokemonId.Exeggutor,
             //PokemonId.Lickitung,
             //PokemonId.Chansey,
-            //PokemonId.Kangaskhan,
-            //PokemonId.MrMime,
-            //PokemonId.Gyarados,
-            //PokemonId.Lapras,
+            ////PokemonId.Kangaskhan,
+            ////PokemonId.MrMime,
+            ////PokemonId.Tauros,
+            ////PokemonId.Gyarados,
+            ////PokemonId.Lapras,
             //PokemonId.Ditto,
-=======
-            //criteria: from SS Tier to A Tier + Regional Exclusive
-            PokemonId.Venusaur,
-            PokemonId.Charizard,
-            PokemonId.Blastoise,
-            PokemonId.Nidoqueen,
-            PokemonId.Nidoking,
-            PokemonId.Clefable,
-            PokemonId.Vileplume,
-            //PokemonId.Golduck,
-            PokemonId.Arcanine,
-            PokemonId.Poliwrath,
-            PokemonId.Machamp,
-            PokemonId.Victreebel,
-            PokemonId.Golem,
-            PokemonId.Slowbro,
-            //PokemonId.Farfetchd,
-            PokemonId.Muk,
-            PokemonId.Exeggutor,
-            PokemonId.Lickitung,
-            PokemonId.Chansey,
-            //PokemonId.Kangaskhan,
-            //PokemonId.MrMime,
-            //PokemonId.Tauros,
-            //PokemonId.Gyarados,
-            //PokemonId.Lapras,
-            PokemonId.Ditto,
->>>>>>> refs/remotes/upstream/master
-            //PokemonId.Vaporeon,
-            //PokemonId.Jolteon,
-            //PokemonId.Flareon,
-            //PokemonId.Porygon,
-            //PokemonId.Snorlax,
-<<<<<<< HEAD
+            ////PokemonId.Vaporeon,
+            ////PokemonId.Jolteon,
+            ////PokemonId.Flareon,
+            ////PokemonId.Porygon,
+            ////PokemonId.Snorlax,
             //PokemonId.Articuno,
             //PokemonId.Zapdos,
             //PokemonId.Moltres,
-            //PokemonId.Dragonite,
+            ////PokemonId.Dragonite,
             //PokemonId.Mewtwo,
             //PokemonId.Mew
-            //PokemonId.Golduck,
-=======
-            PokemonId.Articuno,
-            PokemonId.Zapdos,
-            PokemonId.Moltres,
-            //PokemonId.Dragonite,
-            PokemonId.Mewtwo,
-            PokemonId.Mew
->>>>>>> refs/remotes/upstream/master
         };
 
         public List<PokemonId> PokemonsToEvolve = new List<PokemonId>
@@ -447,7 +333,65 @@ namespace PoGo.NecroBot.Logic
             PokemonId.Mewtwo
         };
 
+        public string LevelUpByCPorIv = "iv";
+        public int MaxPokeballsPerPokemon = 6;
+        public int MaxSpawnLocationOffset = 10;
+        public int MinPokeballsWhileSnipe = 0;
+
+        public int AmountOfPokemonToDisplayOnStart = 10;
+
+        [JsonIgnore]
+        internal AuthSettings Auth = new AuthSettings();
+
+        public bool AutomaticallyLevelUpPokemon = false;
+
+        public bool AutoUpdate = false;
+        public double DefaultAltitude = 10;
+
+        public double DefaultLatitude = 36.80204;
+        public double DefaultLongitude = 34.63328;
+        public int DelayBetweenPokemonCatch = 2000;
+        public int DelayBetweenPlayerActions = 5000;
+        public float EvolveAboveIvValue = 50;
+
+        public bool DumpPokemonStats = false;
+
+        public bool EvolveAllPokemonAboveIv = false;
+        public bool EvolveAllPokemonWithEnoughCandy = true;
+
+        [JsonIgnore]
+        public string GeneralConfigPath;
+
+        public string GpxFile = "GPXPath.GPX";
+        public bool UseGpxPathing = false;
+        public double WalkingSpeedInKilometerPerHour = 130;
+        public int MaxTravelDistanceInMeters = 10000;
+        public int KeepMinCp = 5000;
+        public int KeepMinDuplicatePokemon = 2;
+        public float KeepMinIvPercentage = 95;
+        public bool KeepPokemonsThatCanEvolve = false;
         public bool PrioritizeIvOverCp = true;
+        public bool RenameAboveIv = false;
+        public string RenameTemplate = "{1}_{0}";
+        public bool TransferDuplicatePokemon = true;
+        public string TranslationLanguageCode = "en";
+        public bool UsePokemonToNotCatchFilter = false;
+        public int WebSocketPort = 14251;
+        public bool StartupWelcomeDelay = false;
+        public bool SnipeAtPokestops = false;
+        public int MinPokeballsToSnipe = 20;
+        public string SnipeLocationServer = "localhost";
+        public int SnipeLocationServerPort = 16969;
+        public bool UseSnipeLocationServer = false;
+        public bool UseTransferIVForSnipe = false;
+        public bool SnipeIgnoreUnknownIV = false;
+        public int MinDelayBetweenSnipes = 20000;
+        public int TotalAmountOfPokebalsToKeep = 1500;
+        public int TotalAmountOfPotionsToKeep = 1000;
+        public int TotalAmountOfRevivesToKeep = 500;
+        public int irPowerUpPerfectionIV = 90;
+
+
 
         [JsonIgnore] public string ProfileConfigPath;
 
@@ -455,32 +399,17 @@ namespace PoGo.NecroBot.Logic
 
         public bool RenameOnlyAboveIv = true;
         public bool RenamePokemon = false;
-        public string RenameTemplate = "{1}_{0}";
-        public bool SnipeAtPokestops = false;
         public bool SnipeIgnoreUnknownIv = false;
-        public string SnipeLocationServer = "localhost";
-        public int SnipeLocationServerPort = 16969;
-        public bool StartupWelcomeDelay = true;
-        public int TotalAmountOfPokebalsToKeep = 120;
-        public int TotalAmountOfPotionsToKeep = 80;
-        public int TotalAmountOfRevivesToKeep = 60;
         public bool TransferConfigAndAuthOnUpdate = true;
-        public bool TransferDuplicatePokemon = true;
-        public string TranslationLanguageCode = "en";
         public float UpgradePokemonCpMinimum = 1000;
         public float UpgradePokemonIvMinimum = 95;
         public bool UseEggIncubators = true;
-        public bool UseGpxPathing = false;
         public int UseGreatBallAboveCp = 750;
         public int UseLuckyEggsMinPokemonAmount = 30;
         public bool UseLuckyEggsWhileEvolving = false;
         public int UseMasterBallAboveCp = 1500;
-        public bool UsePokemonToNotCatchFilter = false;
-        public bool UseSnipeLocationServer = false;
         public bool UseTransferIvForSnipe = false;
         public int UseUltraBallAboveCp = 1000;
-        public double WalkingSpeedInKilometerPerHour = 15.0;
-        public int WebSocketPort = 14251;
 
         public static GlobalSettings Default => new GlobalSettings();
 

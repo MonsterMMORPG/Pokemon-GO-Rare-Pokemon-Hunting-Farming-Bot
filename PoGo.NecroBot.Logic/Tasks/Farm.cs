@@ -26,14 +26,6 @@ namespace PoGo.NecroBot.Logic.Service
         {
             if (_session.LogicSettings.TransferDuplicatePokemon)
             {
-<<<<<<< HEAD
-                TransferDuplicatePokemonTask.Execute(_session, cancellationToken).Wait();
-            }
-
-            if (_session.LogicSettings.EvolveAllPokemonAboveIv || _session.LogicSettings.EvolveAllPokemonWithEnoughCandy)
-            {
-                EvolvePokemonTask.Execute(_session, cancellationToken).Wait();
-=======
                 EvolvePokemonTask.Execute(_session, cancellationToken).Wait(cancellationToken);
             }
             if (_session.LogicSettings.AutomaticallyLevelUpPokemon)
@@ -43,7 +35,6 @@ namespace PoGo.NecroBot.Logic.Service
             if (_session.LogicSettings.TransferDuplicatePokemon)
             {
                 TransferDuplicatePokemonTask.Execute(_session, cancellationToken).Wait(cancellationToken);
->>>>>>> refs/remotes/upstream/master
             }
 
             if (_session.LogicSettings.RenamePokemon)
@@ -64,11 +55,7 @@ namespace PoGo.NecroBot.Logic.Service
             }
             else
             {
-<<<<<<< HEAD
-                FarmPokestopsTask.ExeCuteMyFarm(_session, cancellationToken).Wait();
-=======
-                FarmPokestopsTask.Execute(_session, cancellationToken).Wait(cancellationToken);
->>>>>>> refs/remotes/upstream/master
+                FarmPokestopsTask.ExeCuteMyFarm(_session, cancellationToken).Wait(cancellationToken);
             }
         }
     }

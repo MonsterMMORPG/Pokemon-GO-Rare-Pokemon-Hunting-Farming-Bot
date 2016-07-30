@@ -17,7 +17,7 @@ using POGOProtos.Inventory;
 using POGOProtos.Inventory.Item;
 using POGOProtos.Networking.Responses;
 using POGOProtos.Settings.Master;
-using PoGo.NecroBot.CLI;
+
 
 #endregion
 
@@ -468,7 +468,7 @@ namespace PoGo.NecroBot.Logic
             }
         }
 
-<<<<<<< HEAD
+
         public async Task<IEnumerable<PokemonData>> GetPokemonToPowerUp(IEnumerable<PokemonId> filter = null)
         {
             List<PokemonData> lstReturn = new List<PokemonData>();
@@ -501,8 +501,6 @@ namespace PoGo.NecroBot.Logic
                 }
             }
 
-
-
             return lstReturn;
         }
 
@@ -519,7 +517,7 @@ namespace PoGo.NecroBot.Logic
             return 4;
         }
 
-=======
+
         private IEnumerable<ItemData> TakeAmountOfItems(IReadOnlyList<ItemData> items, int ammountToLeave)
         {
             var itemsAvailable = 0;
@@ -557,6 +555,6 @@ namespace PoGo.NecroBot.Logic
             var upgradeResult = await _client.Inventory.UpgradePokemon(pokemonid);
             return upgradeResult;
         }
->>>>>>> refs/remotes/upstream/master
+
     }
 }

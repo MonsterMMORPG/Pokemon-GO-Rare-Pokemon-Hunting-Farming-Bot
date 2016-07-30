@@ -14,7 +14,6 @@ using PoGo.NecroBot.Logic.Utils;
 using PokemonGo.RocketAPI.Extensions;
 using POGOProtos.Map.Fort;
 using POGOProtos.Networking.Responses;
-using PoGo.NecroBot.CLI;
 using System.Data.SQLite;
 using System.Globalization;
 using POGOProtos.Enums;
@@ -170,9 +169,7 @@ namespace PoGo.NecroBot.Logic.Tasks
                         await session.Inventory.RefreshCachedInventory();
                     }
                     await RecycleItemsTask.Execute(session, cancellationToken);
-<<<<<<< HEAD
 
-=======
                     if (session.LogicSettings.EvolveAllPokemonWithEnoughCandy ||
                         session.LogicSettings.EvolveAllPokemonAboveIv)
                     {
@@ -182,22 +179,18 @@ namespace PoGo.NecroBot.Logic.Tasks
                     {
                         await LevelUpPokemonTask.Execute(session, cancellationToken);
                     }
->>>>>>> refs/remotes/upstream/master
+
                     if (session.LogicSettings.TransferDuplicatePokemon)
                     {
                         await TransferDuplicatePokemonTask.Execute(session, cancellationToken);
                     }
-<<<<<<< HEAD
 
                     if (session.LogicSettings.EvolveAllPokemonWithEnoughCandy || session.LogicSettings.EvolveAllPokemonAboveIv)
                     {
                         await EvolvePokemonTask.Execute(session, cancellationToken);
                     }
 
-                    if (session.LogicSettings.RenameAboveIv)
-=======
                     if (session.LogicSettings.RenamePokemon)
->>>>>>> refs/remotes/upstream/master
                     {
                         await RenamePokemonTask.Execute(session, cancellationToken);
                     }

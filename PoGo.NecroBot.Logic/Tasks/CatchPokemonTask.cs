@@ -13,7 +13,7 @@ using POGOProtos.Map.Fort;
 using POGOProtos.Map.Pokemon;
 using POGOProtos.Networking.Responses;
 using PoGo.NecroBot.Logic.Logging;
-using PoGo.NecroBot.CLI;
+
 
 #endregion
 
@@ -181,7 +181,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             var ultraBallsCount = await session.Inventory.GetItemAmountByType(ItemId.ItemUltraBall);
             var masterBallsCount = await session.Inventory.GetItemAmountByType(ItemId.ItemMasterBall);
 
-<<<<<<< HEAD
+
             Logger.Write($"poke ball ({pokeBallsCount}) , great ball ({greatBallsCount}) , ultra ball ({ultraBallsCount}) , master ball ({masterBallsCount}) ", LogLevel.Self, ConsoleColor.White);
 
             if ((pokeBallsCount + greatBallsCount + ultraBallsCount) < GlobalSettings.irCritical_Ball_Lowest)
@@ -193,14 +193,13 @@ namespace PoGo.NecroBot.Logic.Tasks
                 GlobalSettings.blCriticalBall = false;
             }
 
-            if (masterBallsCount > 0 && pokemonCp >= 1200)
-=======
+
             if (masterBallsCount > 0 &&
                 ((pokemonCp >= session.LogicSettings.UseMasterBallAboveCp &&
                   !session.LogicSettings.PokemonToUseMasterball.Any()) ||
                  session.LogicSettings.PokemonToUseMasterball.Contains(pokemonId)))
->>>>>>> refs/remotes/upstream/master
                 return ItemId.ItemMasterBall;
+
             if (ultraBallsCount > 0 && pokemonCp >= session.LogicSettings.UseUltraBallAboveCp)
                 return ItemId.ItemUltraBall;
             if (greatBallsCount > 0 && pokemonCp >= session.LogicSettings.UseGreatBallAboveCp)

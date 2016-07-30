@@ -81,11 +81,6 @@ namespace PoGo.NecroBot.Logic.Logging
         Egg = 10,
         Update = 11,
         Info = 12,
-<<<<<<< HEAD
-        Debug = 13,
-
-=======
         Debug = 13
->>>>>>> refs/remotes/upstream/master
     }
 }

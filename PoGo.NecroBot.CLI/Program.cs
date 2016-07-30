@@ -87,12 +87,8 @@ namespace PoGo.NecroBot.CLI
 
 
             machine.AsyncStart(new VersionCheckState(), session);
-<<<<<<< HEAD
 
-            if(session.LogicSettings.UseSnipeLocationServer)
-=======
             if (session.LogicSettings.UseSnipeLocationServer)
->>>>>>> refs/remotes/upstream/master
                 SnipePokemonTask.AsyncStart(session);
 
             //Non-blocking key reader
