@@ -219,7 +219,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             try
             {
                 m_dbConnection =
-       new SQLiteConnection(@"Data Source=D:\74 pokemon go\PokemonGo-Map-master\pogom.db;Version=3;");
+       new SQLiteConnection(@"Data Source=" + GlobalSettings.srPokemonGoMap_Directory + "pogom.db;Version=3;");
                 m_dbConnection.Open();
             }
             catch (Exception E)

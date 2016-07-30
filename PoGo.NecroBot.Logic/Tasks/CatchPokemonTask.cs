@@ -82,7 +82,7 @@ namespace PoGo.NecroBot.Logic.Tasks
                     var profile = await session.Client.Player.GetPlayer();
 
                     evt.Exp = totalExp;
-                    evt.Stardust = profile.PlayerData.Currencies.ToArray()[1].Amount;
+                    evt.Stardust = profile.PlayerData.Currencies.ToArray()[1].Amount;                  
 
                     var pokemonSettings = await session.Inventory.GetPokemonSettings();
                     var pokemonFamilies = await session.Inventory.GetPokemonFamilies();
@@ -159,11 +159,11 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             Logger.Write($"poke ball ({pokeBallsCount}) , great ball ({greatBallsCount}) , ultra ball ({ultraBallsCount}) , master ball ({masterBallsCount}) ", LogLevel.Self, ConsoleColor.White);
 
-            if ((pokeBallsCount + greatBallsCount + ultraBallsCount) < 25)
+            if ((pokeBallsCount + greatBallsCount + ultraBallsCount) < GlobalSettings.irCritical_Ball_Lowest)
             {
                 GlobalSettings.blCriticalBall = true;
             }
-            if ((pokeBallsCount + greatBallsCount + ultraBallsCount) > 50)
+            if ((pokeBallsCount + greatBallsCount + ultraBallsCount) > GlobalSettings.irCritical_Ball_Upper)
             {
                 GlobalSettings.blCriticalBall = false;
             }

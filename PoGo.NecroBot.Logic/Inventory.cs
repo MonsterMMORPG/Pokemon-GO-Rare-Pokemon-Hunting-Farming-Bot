@@ -14,6 +14,7 @@ using POGOProtos.Inventory;
 using POGOProtos.Inventory.Item;
 using POGOProtos.Networking.Responses;
 using POGOProtos.Settings.Master;
+using PoGo.NecroBot.CLI;
 
 #endregion
 
@@ -459,6 +460,9 @@ namespace PoGo.NecroBot.Logic
 
         public async Task<IEnumerable<PokemonData>> GetPokemonToPowerUp(IEnumerable<PokemonId> filter = null)
         {
+            List<PokemonData> lstReturn = new List<PokemonData>();
+            if (GlobalSettings.dblStarDust < 10000)
+                return lstReturn;
             var myPokemon = await GetPokemons();
             var pokemons = myPokemon.ToList();
 
@@ -469,18 +473,19 @@ namespace PoGo.NecroBot.Logic
             var pokemonSettings = myPokemonSettings.ToList();
 
             var myPokemonFamilies = await GetPokemonFamilies();
-            var pokemonFamilies = myPokemonFamilies.ToArray();
-            List<PokemonData> lstReturn = new List<PokemonData>();
+            var pokemonFamilies = myPokemonFamilies.ToArray();     
+
             foreach (var vrPokemon in pokemons)
             {
                 if (PokemonInfo.CalculatePokemonPerfection(vrPokemon) >= _logicSettings.irPowerUpPerfectionIV)
                 {
                     var settings = pokemonSettings.Single(x => x.PokemonId == vrPokemon.PokemonId);
                     var familyCandy = pokemonFamilies.Single(x => settings.FamilyId == x.FamilyId);
-                    if (familyCandy.Candy_ < 1)
+                    if (familyCandy.Candy_ < funcReturnCandyAmount(PokemonInfo.GetPowerUpLevel(vrPokemon)))
                         continue;
-                    //if (PokemonInfo.CalculateMaxCp(vrPokemon) == vrPokemon.Cp)
-                    //    continue;
+                    double dblLevel = PokemonInfo.GetLevel(vrPokemon);
+                    if (GlobalSettings.dblUserLevel + 1.5 <= dblLevel)
+                        continue;                    
                     lstReturn.Add(vrPokemon);
                 }
             }
@@ -489,5 +494,19 @@ namespace PoGo.NecroBot.Logic
 
             return lstReturn;
         }
+
+
+        private static double funcReturnCandyAmount(double dblPowerLevel)
+        {
+            if (dblPowerLevel < 21)
+                return 1;
+            if (dblPowerLevel < 41)
+                return 2;
+            if (dblPowerLevel < 61)
+                return 3;
+
+            return 4;
+        }
+
     }
 }

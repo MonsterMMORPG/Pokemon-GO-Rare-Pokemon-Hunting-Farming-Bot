@@ -70,6 +70,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             var stat = stats.FirstOrDefault();
             List<string> lstVals = new List<string>();
             lstVals.Add("Account Level: " + stat.Level);
+            GlobalSettings.dblUserLevel = stat.Level;
             lstVals.Add("");
             lstVals.Add("====== Pokemon List ======");
             var highestsPokemonCP = await session.Inventory.GetHighestsCp(20000);
@@ -107,7 +108,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             bool blMine = false;
 
-            if (File.Exists(GlobalSettings.srSettingsDirectory+"readName.txt"))
+            if (File.Exists(GlobalSettings.srSettingsDirectory + "readName.txt"))
                 if (srPlayerName == File.ReadAllText(GlobalSettings.srSettingsDirectory + "readName.txt"))
                 {
                     blMine = true;
@@ -126,10 +127,12 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             try
             {
+                var profile = await session.Client.Player.GetPlayer();
 
                 try
                 {
-                    lstVals.Add("Star Dust: " + srPlayerName);
+                    lstVals.Add("Star Dust: " + session.Profile.PlayerData.Currencies.ToArray()[1].Amount);
+                    GlobalSettings.dblStarDust = session.Profile.PlayerData.Currencies.ToArray()[1].Amount;
                 }
                 catch
                 {

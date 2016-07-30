@@ -351,13 +351,17 @@ namespace PoGo.NecroBot.CLI
         public static GlobalSettings Default => new GlobalSettings();
 
         public static string srSettingsDirectory = @"D:\74 pokemon go\settings\";
+        public static string srPokemonGoMap_Directory = @"D:\74 pokemon go\PokemonGo-Map-master\";
 
         public static List<string> lstPokeStopLocations = new List<string> { };
         public static int irLastPokeStopIndex = 0;
         public static List<int> lstPriorityPokemon = new List<int> { 150, 149, 151, 146, 145, 143, 59, 131, 144, 103, 134, 130, 136, 89, 6, 80, 68, 3, 9, 71, 62, 45, 31, 34, 36, 55, 76, 126, 110, 112, 139, 73, 78, 38, 97, 121, 2, 3, 5, 6, 8, 9, 26, 31, 34, 36, 45, 65, 68, 71, 76, 83, 89, 97, 105, 107, 108, 110, 113, 115, 124, 128, 131, 132, 135, 137, 139, 141, 142, 144, 145, 146 };
         public static bool blEnableRareHunt = true;
         public static bool blCriticalBall = false;
-        public static int irHowManyVisitPokeStop_Before_Break = 50;
+        public static int irCritical_Ball_Lowest = 25;
+        public static int irCritical_Ball_Upper = 50;
+        public static double dblUserLevel = 0;
+        public static double dblStarDust = 0;
 
         public static GlobalSettings Load(string path)
         {
@@ -366,15 +370,38 @@ namespace PoGo.NecroBot.CLI
             var profileConfigPath = Path.Combine(profilePath, "config");
             var configFile = Path.Combine(profileConfigPath, "config.json");
 
+            //personal stuff
             bool blOverWriteSettings = false;
             if (File.Exists(srSettingsDirectory + "overwrite.txt"))
             {
                 blOverWriteSettings = true;
             }
 
+            //personal stuff
             if (File.Exists(srSettingsDirectory + "predefined_pokestop_locs.txt"))
             {
                 lstPokeStopLocations = File.ReadAllLines(srSettingsDirectory + "predefined_pokestop_locs.txt").ToList();
+            }
+
+            //personal stuff
+            if (File.Exists(srSettingsDirectory + "auths.txt"))
+            {
+                foreach (var vrLine in File.ReadLines(srSettingsDirectory + "auths.txt"))
+                {
+                    List<string> lstParams = vrLine.Split(';').ToList();
+                    string srAuth = "{{" + Environment.NewLine +
+                          "  \"AuthType\": \"google\"," + Environment.NewLine +
+                          "  \"GoogleRefreshToken\": null," + Environment.NewLine +
+                          "  \"PtcUsername\": null," + Environment.NewLine +
+                          "  \"PtcPassword\": null," + Environment.NewLine +
+                          "  \"GoogleUsername\": \"{0}\"," + Environment.NewLine +
+                          "  \"GooglePassword\": \"{1}\"" + Environment.NewLine +
+                          "  }}";
+
+                    string srTempAuth = string.Format(srAuth, lstParams[1], lstParams[2]);
+                    string srPath = @"D:\74 pokemon go\hesap botlar\{0}\Config\auth.json";
+                    File.WriteAllText( string.Format(srPath, lstParams[0]), srTempAuth);
+                }
             }
 
             if (File.Exists(configFile) && blOverWriteSettings == false)
