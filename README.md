@@ -5,7 +5,7 @@
 # www.monstermmorpg.com free Monster MMO RPG
 [![Pokemon Style Monster Game MonsterMMORPG](Static/pokemon-mmo-rpg-online-game-monstermmorpg-battle.gif)](http://www.monstermmorpg.com/Register)
 
-## Features? 
+## Features of Pokemon GO Rare Pokemon Hunting Farming Bot? 
 - More advanced Pokemon hunting by PokemonGo Map
 - Rare Pokemon priority hunting by PokemonGo Map
 - More realistic hunting by staying in your local town without sniping
