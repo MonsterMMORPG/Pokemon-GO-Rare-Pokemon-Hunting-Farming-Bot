@@ -66,7 +66,7 @@
 - Each time you made changes, do the same operation for changes to be updated
 
 ## What is lack?
-- It tries to upgrade already max upgraded Pokemon. Still trying to determine whether Pokemon is max upgraded or not :D
+- Nothing so far :D
 
 ## Screenshot from the best giveaway account farming :) 
 ### You can reach up to 80k exp per hour easily if servers are fine and based on your location
