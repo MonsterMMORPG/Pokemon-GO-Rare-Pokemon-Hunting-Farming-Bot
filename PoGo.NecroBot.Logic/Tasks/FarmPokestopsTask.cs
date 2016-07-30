@@ -65,12 +65,9 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             session.EventDispatcher.Send(new PokeStopListEvent { Forts = pokestopList });
 
-            int irLocalPokeStopCounter = 0;
-
             while (pokestopList.Any())
             {
-                irLocalPokeStopCounter++;
-                if (GlobalSettings.irHowManyVisitPokeStop_Before_Break >= irLocalPokeStopCounter)
+                if (GlobalSettings.blCriticalBall == false && blWentAnyLoc == true)
                     break;
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -247,6 +244,8 @@ namespace PoGo.NecroBot.Logic.Tasks
 
         private static HashSet<string> hsGonaLocations = new HashSet<string>();
 
+        private static bool blWentAnyLoc = false;
+
         public static async Task ExeCuteMyFarm(ISession session, CancellationToken cancellationToken)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
@@ -262,7 +261,6 @@ namespace PoGo.NecroBot.Logic.Tasks
             double dblRareIndex = 999;
             int irRarePokeId = 0;
 
-            bool blWentAnyLoc = false;
 
             for (int i = 0; i < vrList.Count; i++)
             {
@@ -331,10 +329,10 @@ namespace PoGo.NecroBot.Logic.Tasks
                         session.LogicSettings.WalkingSpeedInKilometerPerHour,
                         async () =>
                         {
-                        // Catch normal map Pokemon
-                        await CatchNearbyPokemonsTask.Execute(session, cancellationToken);
-                        //Catch Incense Pokemon
-                        await CatchIncensePokemonsTask.Execute(session, cancellationToken);
+                            // Catch normal map Pokemon
+                            await CatchNearbyPokemonsTask.Execute(session, cancellationToken);
+                            //Catch Incense Pokemon
+                            await CatchIncensePokemonsTask.Execute(session, cancellationToken);
                             return true;
                         }, cancellationToken);
 
