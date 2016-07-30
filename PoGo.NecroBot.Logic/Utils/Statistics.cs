@@ -22,7 +22,7 @@ namespace PoGo.NecroBot.Logic.Utils
         private readonly DateTime _initSessionDateTime = DateTime.Now;
 
         private StatsExport _exportStats;
-        private string _playerName;
+        public string _playerName;
         public int TotalExperience;
         public int TotalItemsRemoved;
         public int TotalPokemons;
