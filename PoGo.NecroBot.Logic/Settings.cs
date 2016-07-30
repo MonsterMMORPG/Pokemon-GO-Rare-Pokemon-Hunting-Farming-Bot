@@ -142,7 +142,7 @@ namespace PoGo.NecroBot.CLI
         public int TotalAmountOfPokebalsToKeep = 1500;
         public int TotalAmountOfPotionsToKeep = 1000;
         public int TotalAmountOfRevivesToKeep = 500;
-        public int irPowerUpPerfectionIV = 95;
+        public int irPowerUpPerfectionIV = 90;
 
 
         public List<KeyValuePair<ItemId, int>> ItemRecycleFilter = new List<KeyValuePair<ItemId, int>>

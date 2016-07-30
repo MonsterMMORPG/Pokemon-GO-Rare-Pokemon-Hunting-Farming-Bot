@@ -115,15 +115,15 @@ namespace PoGo.NecroBot.Logic.Tasks
                                 await SnipePokemonTask.Execute(session, cancellationToken);
                             }
 
-                            if (session.LogicSettings.TransferDuplicatePokemon)
-                            {
-                                await TransferDuplicatePokemonTask.Execute(session, cancellationToken);
-                            }
-
                             if (session.LogicSettings.EvolveAllPokemonWithEnoughCandy ||
                                 session.LogicSettings.EvolveAllPokemonAboveIv)
                             {
                                 await EvolvePokemonTask.Execute(session, cancellationToken);
+                            }
+
+                            if (session.LogicSettings.TransferDuplicatePokemon)
+                            {
+                                await TransferDuplicatePokemonTask.Execute(session, cancellationToken);
                             }
 
                             if (session.LogicSettings.RenameAboveIv)

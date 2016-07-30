@@ -464,7 +464,7 @@ namespace PoGo.NecroBot.Logic
 
             pokemons = pokemons.OrderByDescending(PokemonInfo.CalculatePokemonPerfection).ToList();
 
-            return pokemons;//returns all instead of iv
+            //return pokemons;//returns all instead of iv
 
             List<PokemonData> lstReturn = new List<PokemonData>();
             foreach (var vrPokemon in pokemons)
