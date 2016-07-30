@@ -149,6 +149,16 @@ namespace PoGo.NecroBot.CLI
         public List<KeyValuePair<ItemId, int>> ItemRecycleFilter = new List<KeyValuePair<ItemId, int>>
         {
             new KeyValuePair<ItemId, int>(ItemId.ItemUnknown, 0),
+            new KeyValuePair<ItemId, int>(ItemId.ItemPokeBall, 100),
+            new KeyValuePair<ItemId, int>(ItemId.ItemGreatBall, 200),
+            new KeyValuePair<ItemId, int>(ItemId.ItemUltraBall, 4000),
+            new KeyValuePair<ItemId, int>(ItemId.ItemMasterBall, 4000),
+            new KeyValuePair<ItemId, int>(ItemId.ItemPotion, 0),
+            new KeyValuePair<ItemId, int>(ItemId.ItemSuperPotion, 0),
+            new KeyValuePair<ItemId, int>(ItemId.ItemHyperPotion, 100),
+            new KeyValuePair<ItemId, int>(ItemId.ItemMaxPotion, 100),
+            new KeyValuePair<ItemId, int>(ItemId.ItemRevive, 50),
+            new KeyValuePair<ItemId, int>(ItemId.ItemMaxRevive, 50),
             new KeyValuePair<ItemId, int>(ItemId.ItemLuckyEgg, 200),
             new KeyValuePair<ItemId, int>(ItemId.ItemIncenseOrdinary, 100),
             new KeyValuePair<ItemId, int>(ItemId.ItemIncenseSpicy, 100),
@@ -344,6 +354,10 @@ namespace PoGo.NecroBot.CLI
 
         public static List<string> lstPokeStopLocations = new List<string> { };
         public static int irLastPokeStopIndex = 0;
+        public static List<int> lstPriorityPokemon = new List<int> { 150, 149, 151, 146, 145, 143, 59, 131, 144, 103, 134, 130, 136, 89, 6, 80, 68, 3, 9, 71, 62, 45, 31, 34, 36, 55, 76, 126, 110, 112, 139, 73, 78, 38, 97, 121, 2, 3, 5, 6, 8, 9, 26, 31, 34, 36, 45, 65, 68, 71, 76, 83, 89, 97, 105, 107, 108, 110, 113, 115, 124, 128, 131, 132, 135, 137, 139, 141, 142, 144, 145, 146 };
+        public static bool blEnableRareHunt = true;
+        public static bool blCriticalBall = false;
+        public static int irHowManyVisitPokeStop_Before_Break = 50;
 
         public static GlobalSettings Load(string path)
         {

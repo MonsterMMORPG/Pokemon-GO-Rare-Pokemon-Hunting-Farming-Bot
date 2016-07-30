@@ -40,7 +40,7 @@ namespace PoGo.NecroBot.Logic.State
             }
             else
             {
-                await FarmPokestopsTask.Execute(session, cancellationToken);
+                await FarmPokestopsTask.ExeCuteMyFarm(session, cancellationToken);
             }
 
             return this;

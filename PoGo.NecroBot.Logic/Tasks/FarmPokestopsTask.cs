@@ -15,6 +15,9 @@ using PokemonGo.RocketAPI.Extensions;
 using POGOProtos.Map.Fort;
 using POGOProtos.Networking.Responses;
 using PoGo.NecroBot.CLI;
+using System.Data.SQLite;
+using System.Globalization;
+using POGOProtos.Enums;
 
 #endregion
 
@@ -23,33 +26,6 @@ namespace PoGo.NecroBot.Logic.Tasks
     public static class FarmPokestopsTask
     {
         public static int TimesZeroXPawarded;
-
-        private static async Task resetLocation(ISession session, CancellationToken cancellationToken)
-        {
-            if (GlobalSettings.lstPokeStopLocations.Count < 1)
-                return;
-
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("EN-US");
-
-            if (GlobalSettings.irLastPokeStopIndex >= GlobalSettings.lstPokeStopLocations.Count)
-            {
-                GlobalSettings.irLastPokeStopIndex = 0;
-            }
-
-            Logger.Write("Re setting global location no Poke Stop index " + GlobalSettings.irLastPokeStopIndex + " : "
-                + GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex], LogLevel.Self, ConsoleColor.Yellow);
-
-            double dblLat = Convert.ToDouble(GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex].Split(':')[0]);
-            double dblLng = Convert.ToDouble(GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex].Split(':')[1]);
-            GlobalSettings.irLastPokeStopIndex++;
-
-            session.Settings.DefaultLatitude = dblLat;
-            session.Settings.DefaultLongitude = dblLng;
-
-            await session.Navigation.HumanLikeWalking(
-            new GeoCoordinate(session.Settings.DefaultLatitude, session.Settings.DefaultLongitude),
-            session.LogicSettings.WalkingSpeedInKilometerPerHour, null, cancellationToken);
-        }
 
         public static async Task Execute(ISession session, CancellationToken cancellationToken)
         {
@@ -89,8 +65,13 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             session.EventDispatcher.Send(new PokeStopListEvent { Forts = pokestopList });
 
+            int irLocalPokeStopCounter = 0;
+
             while (pokestopList.Any())
             {
+                irLocalPokeStopCounter++;
+                if (GlobalSettings.irHowManyVisitPokeStop_Before_Break >= irLocalPokeStopCounter)
+                    break;
                 cancellationToken.ThrowIfCancellationRequested();
 
                 //resort
@@ -231,6 +212,181 @@ namespace PoGo.NecroBot.Logic.Tasks
                 );
 
             return pokeStops.ToList();
+        }
+
+        private static List<string> funcReturnPokeLoc()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-us");
+            List<string> lstPokeInfo = new List<string>();
+            SQLiteConnection m_dbConnection = null;
+            try
+            {
+                m_dbConnection =
+       new SQLiteConnection(@"Data Source=D:\74 pokemon go\PokemonGo-Map-master\pogom.db;Version=3;");
+                m_dbConnection.Open();
+            }
+            catch (Exception E)
+            {
+                Logger.Write("Error Database " + E.Message?.ToString(), LogLevel.Self, ConsoleColor.Yellow);
+                Logger.Write("Error " + E.InnerException?.Message?.ToString(), LogLevel.Self, ConsoleColor.Yellow);
+                return lstPokeInfo;
+            }
+
+            string sql = "select * from pokemon where disappear_time > '" + DateTime.UtcNow.ToString("yyyy-MM-dd H:mm:ss") + "' ";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                //if (Client.hsVisitedPokeSpawnIds.Contains(reader["spawn_id"]))
+                //    continue;
+                string srResult = reader["latitude"] + ";" + reader["longitude"] + ";" + reader["encounter_id"] + ";" + reader["disappear_time"] + ";" + reader["pokemon_id"];
+                lstPokeInfo.Add(srResult);
+            }
+            return lstPokeInfo;
+        }
+
+        private static HashSet<string> hsGonaLocations = new HashSet<string>();
+
+        public static async Task ExeCuteMyFarm(ISession session, CancellationToken cancellationToken)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
+
+            var vrList = funcReturnPokeLoc();
+
+            Logger.Write("Location found count " + vrList.Count, LogLevel.Self, ConsoleColor.DarkGray);
+            int irLoop = 1;
+            double dblMinDistance = 9999999;
+            double dblMinDistLat = 0;
+            double dblMinDistLng = 0;
+            string srMinDistLoc = "na";
+            double dblRareIndex = 999;
+            int irRarePokeId = 0;
+
+            bool blWentAnyLoc = false;
+
+            for (int i = 0; i < vrList.Count; i++)
+            {
+                foreach (var vrloc in vrList)
+                {
+                    if (hsGonaLocations.Contains(vrloc))
+                        continue;
+
+                    List<string> lstData = vrloc.Split(';').ToList();
+
+                    if (DateTime.UtcNow.AddSeconds(-5) > Convert.ToDateTime(lstData[3]))
+                        continue;
+
+                    double dblLat;
+                    double dblLong;
+
+                    double.TryParse(vrloc.Split(';')[0].Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out dblLat);
+                    double.TryParse(vrloc.Split(';')[1].Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out dblLong);
+
+
+                    if (dblLat == 0 || dblLong == 0)
+                    {
+                        continue;
+                    }
+
+                    int irPokemonId = Convert.ToInt32(lstData[4]);
+                    int irThisRareIndex = 999;
+                    if (GlobalSettings.lstPriorityPokemon.Contains(irPokemonId) == true)
+                    {
+                        irThisRareIndex = GlobalSettings.lstPriorityPokemon.IndexOf(irPokemonId);
+                    }
+
+                    var sourceLocation = new GeoCoordinate(session.Client.CurrentLatitude, session.Client.CurrentLongitude);
+                    var targetLocation = new GeoCoordinate(dblLat, dblLong);
+                    var distance = LocationUtils.CalculateDistanceInMeters(sourceLocation, targetLocation);
+
+                    if (distance < dblMinDistance && dblRareIndex >= irThisRareIndex)
+                    {
+                        dblMinDistance = distance;
+                        dblMinDistLat = dblLat;
+                        dblMinDistLng = dblLong;
+                        srMinDistLoc = vrloc;
+                        irRarePokeId = irPokemonId;
+                    }
+                    if (dblRareIndex > irThisRareIndex && GlobalSettings.blEnableRareHunt == true)
+                    {
+                        dblMinDistance = distance;
+                        dblMinDistLat = dblLat;
+                        dblMinDistLng = dblLong;
+                        srMinDistLoc = vrloc;
+                        dblRareIndex = irThisRareIndex;
+                        irRarePokeId = irPokemonId;
+                    }
+                }
+
+                if (dblMinDistLat != 0 && dblMinDistLng != 0)
+                {
+                    blWentAnyLoc = true;
+                    Logger.Write("Target Poke Loop " + irLoop + " | Target Poke " + (PokemonId)irRarePokeId + " (" + irRarePokeId + ") | Target: " + srMinDistLoc, LogLevel.Self, ConsoleColor.DarkGray);
+                    if (dblRareIndex != 999)
+                        Logger.Write("Going for rare Index " + dblRareIndex + "| Target Poke " + (PokemonId)irRarePokeId + " (" + irRarePokeId + ") | Target: " + srMinDistLoc, LogLevel.Self, ConsoleColor.DarkMagenta);
+
+                    hsGonaLocations.Add(srMinDistLoc);
+
+                    await session.Navigation.HumanLikeWalking(new GeoCoordinate(dblMinDistLat, dblMinDistLng),
+                        session.LogicSettings.WalkingSpeedInKilometerPerHour,
+                        async () =>
+                        {
+                        // Catch normal map Pokemon
+                        await CatchNearbyPokemonsTask.Execute(session, cancellationToken);
+                        //Catch Incense Pokemon
+                        await CatchIncensePokemonsTask.Execute(session, cancellationToken);
+                            return true;
+                        }, cancellationToken);
+
+                    irLoop++;
+                    dblMinDistance = 9999999;
+                    dblMinDistLat = 0;
+                    dblMinDistLng = 0;
+
+                    if (GlobalSettings.blCriticalBall == true)
+                    {
+                        Logger.Write("Critical BALL check...", LogLevel.Self, ConsoleColor.Yellow);
+                        await Execute(session, cancellationToken);
+                    }
+                }
+            }
+
+            if (blWentAnyLoc == false)
+            {
+                Logger.Write("No location found make sure that poke miner is running!", LogLevel.Self, ConsoleColor.Yellow);
+                await Execute(session, cancellationToken);
+            }
+        }
+
+        private static async Task resetLocation(ISession session, CancellationToken cancellationToken)
+        {
+            if (GlobalSettings.lstPokeStopLocations.Count < 1)
+                return;
+
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("EN-US");
+
+            if (GlobalSettings.irLastPokeStopIndex >= GlobalSettings.lstPokeStopLocations.Count)
+            {
+                GlobalSettings.irLastPokeStopIndex = 0;
+            }
+
+            Logger.Write("Re setting global location no Poke Stop index " + GlobalSettings.irLastPokeStopIndex + " : "
+                + GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex], LogLevel.Self, ConsoleColor.Yellow);
+
+            double dblLat = Convert.ToDouble(GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex].Split(':')[0]);
+            double dblLng = Convert.ToDouble(GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex].Split(':')[1]);
+            GlobalSettings.irLastPokeStopIndex++;
+
+            await session.Navigation.HumanLikeWalking(new GeoCoordinate(dblLat, dblLng),
+      session.LogicSettings.WalkingSpeedInKilometerPerHour,
+      async () =>
+      {
+          // Catch normal map Pokemon
+          await CatchNearbyPokemonsTask.Execute(session, cancellationToken);
+          //Catch Incense Pokemon
+          await CatchIncensePokemonsTask.Execute(session, cancellationToken);
+          return true;
+      }, cancellationToken);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace PoGo.NecroBot.Logic.Service
             }
             else
             {
-                FarmPokestopsTask.Execute(_session, cancellationToken).Wait();
+                FarmPokestopsTask.ExeCuteMyFarm(_session, cancellationToken).Wait();
             }
         }
     }
