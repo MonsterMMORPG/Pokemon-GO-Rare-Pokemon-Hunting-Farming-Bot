@@ -68,6 +68,7 @@ namespace PoGo.NecroBot.Logic.Logging
 
     public enum LogLevel
     {
+        Self = -1,
         None = 0,
         Error = 1,
         Warning = 2,
@@ -82,6 +83,6 @@ namespace PoGo.NecroBot.Logic.Logging
         Update = 11,
         Info = 12,
         Debug = 13,
-        
+
     }
 }

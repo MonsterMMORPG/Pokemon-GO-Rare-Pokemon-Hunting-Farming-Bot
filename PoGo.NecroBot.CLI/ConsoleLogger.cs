@@ -73,6 +73,10 @@ namespace PoGo.NecroBot.CLI
 
             switch (level)
             {
+                case LogLevel.Self:
+                    Console.ForegroundColor = color;
+                    Console.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}] (SELF) {message}");
+                    break;
                 case LogLevel.Error:
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss")}] ({strError}) {message}");

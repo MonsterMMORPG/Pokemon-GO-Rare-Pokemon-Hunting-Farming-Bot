@@ -9,6 +9,7 @@ using PoGo.NecroBot.Logic.State;
 using PoGo.NecroBot.Logic.Utils;
 using PokemonGo.RocketAPI;
 using POGOProtos.Inventory.Item;
+using PoGo.NecroBot.Logic.PoGoUtils;
 
 #endregion
 
@@ -22,6 +23,24 @@ namespace PoGo.NecroBot.Logic.Tasks
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            var pokemonPowerUpTask = await session.Inventory.GetPokemonToPowerUp(session.LogicSettings.PokemonsToEvolve);
+            var pokemonPowerUp = pokemonPowerUpTask.ToList();
+
+            Logging.Logger.Write("Starting Power UP Pokemon...", Logging.LogLevel.Self, ConsoleColor.Yellow);
+
+            foreach (var vrPokemon in pokemonPowerUp)
+            {
+                Logging.Logger.Write($"Upgrading Pokemon {vrPokemon.PokemonId} , Up Count: {vrPokemon.NumUpgrades} , IV: {PokemonInfo.CalculatePokemonPerfection(vrPokemon)} CP: {vrPokemon.Cp} , CP Multi: {vrPokemon.CpMultiplier} , CP Add Multi: {vrPokemon.AdditionalCpMultiplier}.....", Logging.LogLevel.Self, ConsoleColor.DarkYellow);
+
+                while (true)
+                {
+                    var evolveResponse = await session.Client.Inventory.UpgradePokemon(vrPokemon.Id);
+                    if (evolveResponse.Result != POGOProtos.Networking.Responses.UpgradePokemonResponse.Types.Result.Success)
+                        break;
+             
+                }
+            }
+
             var pokemonToEvolveTask = await session.Inventory.GetPokemonToEvolve(session.LogicSettings.PokemonsToEvolve);
             var pokemonToEvolve = pokemonToEvolveTask.ToList();
 
@@ -31,7 +50,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
                 var luckyEggs = inventoryContent.Where(p => p.ItemId == ItemId.ItemLuckyEgg);
                 var luckyEgg = luckyEggs.FirstOrDefault();
-                
+
                 //maybe there can be a warning message as an else condition of luckyEgg checks, like; 
                 //"There is no Lucky Egg, so, your UseLuckyEggsMinPokemonAmount setting bypassed."
                 if (session.LogicSettings.UseLuckyEggsWhileEvolving && luckyEgg != null && luckyEgg.Count > 0)
@@ -75,7 +94,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             _lastLuckyEggTime = DateTime.Now;
             await session.Client.Inventory.UseItemXpBoost();
             await session.Inventory.RefreshCachedInventory();
-            session.EventDispatcher.Send(new UseLuckyEggEvent {Count = luckyEgg.Count});
+            session.EventDispatcher.Send(new UseLuckyEggEvent { Count = luckyEgg.Count });
             DelayingUtils.Delay(session.LogicSettings.DelayBetweenPokemonCatch, 2000);
         }
     }

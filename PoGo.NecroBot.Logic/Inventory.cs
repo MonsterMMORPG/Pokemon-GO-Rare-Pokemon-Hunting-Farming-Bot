@@ -252,7 +252,7 @@ namespace PoGo.NecroBot.Logic
                             Count = x.Count - _logicSettings.ItemRecycleFilter.Single(f => f.Key == x.ItemId).Value,
                             Unseen = x.Unseen
                         });
-            
+
             itemsToRecylce.AddRange(otherItemsToRecylce);
 
             return itemsToRecylce;
@@ -455,6 +455,27 @@ namespace PoGo.NecroBot.Logic
             {
                 ss.Release();
             }
+        }
+
+        public async Task<IEnumerable<PokemonData>> GetPokemonToPowerUp(IEnumerable<PokemonId> filter = null)
+        {
+            var myPokemon = await GetPokemons();
+            var pokemons = myPokemon.ToList();
+
+            pokemons = pokemons.OrderByDescending(PokemonInfo.CalculatePokemonPerfection).ToList();
+
+            return pokemons;//returns all instead of iv
+
+            List<PokemonData> lstReturn = new List<PokemonData>();
+            foreach (var vrPokemon in pokemons)
+            {
+                if (PokemonInfo.CalculatePokemonPerfection(vrPokemon) >= _logicSettings.irPowerUpPerfectionIV)
+                {
+                    lstReturn.Add(vrPokemon);
+                }
+            }
+
+            return lstReturn;
         }
     }
 }
