@@ -67,10 +67,13 @@
 - It tries to upgrade already max upgraded Pokemon. Still trying to determine whether Pokemon is max upgraded or not :D
 
 ## Screenshot from the best giveaway account farming :) 
-### You can reach up to 50k exp per hour without lucky egg based on how well the PTC servers working and how good area you farm
+### You can reach up to 80k exp per hour easily if servers are fine and based on your location
+- No sniping necessary
+- No teleport necessary
+- KM per hour is 130 but still eggs are hatched perfectly
+- Catch all you can while getting this much experience including Rares :D
 
 ![Pokemon Go Bot Screen!](Static/pokemon-go-bot.png)
-
 
 <p>Feel free to ask any questions with opening issues</p>
 
