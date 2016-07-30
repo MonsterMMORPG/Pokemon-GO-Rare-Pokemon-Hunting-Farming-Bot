@@ -104,11 +104,11 @@ namespace PoGo.NecroBot.CLI
 
         public bool AutoUpdate = true;
         public double DefaultAltitude = 10;
-        public double DefaultLatitude = 40.785091;
-        public double DefaultLongitude = -73.968285;
+        public double DefaultLatitude = 36.80204;
+        public double DefaultLongitude = 34.63328;
         public int DelayBetweenPokemonCatch = 2000;
         public int DelayBetweenPlayerActions = 5000;
-        public float EvolveAboveIvValue = 90;
+        public float EvolveAboveIvValue = 95;
         public bool EvolveAllPokemonAboveIv = false;
         public bool EvolveAllPokemonWithEnoughCandy = true;
         public int UseLuckyEggsMinPokemonAmount = 30;
@@ -117,20 +117,20 @@ namespace PoGo.NecroBot.CLI
         public bool DumpPokemonStats = false;
         public string GpxFile = "GPXPath.GPX";
         public bool UseGpxPathing = false;
-        public double WalkingSpeedInKilometerPerHour = 15.0;
-        public int MaxTravelDistanceInMeters = 1000;
-        public int KeepMinCp = 1250;
+        public double WalkingSpeedInKilometerPerHour = 130;
+        public int MaxTravelDistanceInMeters = 10000;
+        public int KeepMinCp = 2500;
         public int KeepMinDuplicatePokemon = 1;
         public float KeepMinIvPercentage = 95;
         public bool KeepPokemonsThatCanEvolve = false;
         public bool PrioritizeIvOverCp = true;
-        public bool RenameAboveIv = true;
+        public bool RenameAboveIv = false;
         public string RenameTemplate = "{1}_{0}";
         public bool TransferDuplicatePokemon = true;
         public string TranslationLanguageCode = "en";
         public bool UsePokemonToNotCatchFilter = false;
         public int WebSocketPort = 14251;
-        public bool StartupWelcomeDelay = true;
+        public bool StartupWelcomeDelay = false;
         public bool SnipeAtPokestops = false;
         public int MinPokeballsToSnipe = 20;
         public string SnipeLocationServer = "localhost";
@@ -139,9 +139,9 @@ namespace PoGo.NecroBot.CLI
         public bool UseTransferIVForSnipe = false;
         public bool SnipeIgnoreUnknownIV = false;
         public int MinDelayBetweenSnipes = 20000;
-        public int TotalAmountOfPokebalsToKeep = 150;
-        public int TotalAmountOfPotionsToKeep = 100;
-        public int TotalAmountOfRevivesToKeep = 50;
+        public int TotalAmountOfPokebalsToKeep = 1500;
+        public int TotalAmountOfPotionsToKeep = 1000;
+        public int TotalAmountOfRevivesToKeep = 500;
 
 
         public List<KeyValuePair<ItemId, int>> ItemRecycleFilter = new List<KeyValuePair<ItemId, int>>
@@ -345,30 +345,30 @@ namespace PoGo.NecroBot.CLI
             var profileConfigPath = Path.Combine(profilePath, "config");
             var configFile = Path.Combine(profileConfigPath, "config.json");
 
-            if (File.Exists(configFile))
-            {
-                try
-                {
-                    //if the file exists, load the settings
-                    var input = File.ReadAllText(configFile);
+            //if (File.Exists(configFile))
+            //{
+            //    try
+            //    {
+            //        //if the file exists, load the settings
+            //        var input = File.ReadAllText(configFile);
 
-                    var jsonSettings = new JsonSerializerSettings();
-                    jsonSettings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
-                    jsonSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
-                    jsonSettings.DefaultValueHandling = DefaultValueHandling.Populate;
+            //        var jsonSettings = new JsonSerializerSettings();
+            //        jsonSettings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
+            //        jsonSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
+            //        jsonSettings.DefaultValueHandling = DefaultValueHandling.Populate;
 
-                    settings = JsonConvert.DeserializeObject<GlobalSettings>(input, jsonSettings);
-                }
-                catch (Newtonsoft.Json.JsonReaderException exception)
-                {
-                    Logger.Write("JSON Exception: " + exception.Message, LogLevel.Error);
-                    return null;
-                }
-            }
-            else
-            {
+            //        settings = JsonConvert.DeserializeObject<GlobalSettings>(input, jsonSettings);
+            //    }
+            //    catch (Newtonsoft.Json.JsonReaderException exception)
+            //    {
+            //        Logger.Write("JSON Exception: " + exception.Message, LogLevel.Error);
+            //        return null;
+            //    }
+            //}
+            //else
+            //{
                 settings = new GlobalSettings();
-            }
+            //}
 
             if (settings.WebSocketPort == 0)
             {
@@ -399,10 +399,10 @@ namespace PoGo.NecroBot.CLI
             settings.Save(configFile);
             settings.Auth.Load(Path.Combine(profileConfigPath, "auth.json"));
 
-            if (firstRun)
-            {
-                return null;
-            }
+            //if (firstRun)
+            //{
+            //    return null;
+            //}
 
             return settings;
         }
