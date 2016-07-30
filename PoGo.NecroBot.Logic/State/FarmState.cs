@@ -12,16 +12,14 @@ namespace PoGo.NecroBot.Logic.State
     {
         public async Task<IState> Execute(ISession session, CancellationToken cancellationToken)
         {
-
+            if (session.LogicSettings.TransferDuplicatePokemon)
+            {
+                await TransferDuplicatePokemonTask.Execute(session, cancellationToken);
+            }
 
             if (session.LogicSettings.EvolveAllPokemonAboveIv || session.LogicSettings.EvolveAllPokemonWithEnoughCandy)
             {
                 await EvolvePokemonTask.Execute(session, cancellationToken);
-            }
-
-            if (session.LogicSettings.TransferDuplicatePokemon)
-            {
-                await TransferDuplicatePokemonTask.Execute(session, cancellationToken);
             }
 
             if (session.LogicSettings.RenameAboveIv)

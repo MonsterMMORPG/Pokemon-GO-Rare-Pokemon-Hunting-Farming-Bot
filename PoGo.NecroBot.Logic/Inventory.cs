@@ -465,15 +465,25 @@ namespace PoGo.NecroBot.Logic
             pokemons = pokemons.OrderByDescending(PokemonInfo.CalculatePokemonPerfection).ToList();
 
             //return pokemons;//returns all instead of iv
+            var myPokemonSettings = await GetPokemonSettings();
+            var pokemonSettings = myPokemonSettings.ToList();
 
+            var myPokemonFamilies = await GetPokemonFamilies();
+            var pokemonFamilies = myPokemonFamilies.ToArray();
             List<PokemonData> lstReturn = new List<PokemonData>();
             foreach (var vrPokemon in pokemons)
             {
                 if (PokemonInfo.CalculatePokemonPerfection(vrPokemon) >= _logicSettings.irPowerUpPerfectionIV)
                 {
+                    var settings = pokemonSettings.Single(x => x.PokemonId == vrPokemon.PokemonId);
+                    var familyCandy = pokemonFamilies.Single(x => settings.FamilyId == x.FamilyId);
+                    if (familyCandy.Candy_ < 1)
+                        continue;
                     lstReturn.Add(vrPokemon);
                 }
             }
+
+
 
             return lstReturn;
         }

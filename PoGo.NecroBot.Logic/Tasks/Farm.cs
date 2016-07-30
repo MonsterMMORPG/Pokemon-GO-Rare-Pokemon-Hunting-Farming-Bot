@@ -20,16 +20,14 @@ namespace PoGo.NecroBot.Logic.Service
 
         public void Run(CancellationToken cancellationToken)
         {
-
+            if (_session.LogicSettings.TransferDuplicatePokemon)
+            {
+                TransferDuplicatePokemonTask.Execute(_session, cancellationToken).Wait();
+            }
 
             if (_session.LogicSettings.EvolveAllPokemonAboveIv || _session.LogicSettings.EvolveAllPokemonWithEnoughCandy)
             {
                 EvolvePokemonTask.Execute(_session, cancellationToken).Wait();
-            }
-
-            if (_session.LogicSettings.TransferDuplicatePokemon)
-            {
-                TransferDuplicatePokemonTask.Execute(_session, cancellationToken).Wait();
             }
 
             if (_session.LogicSettings.RenameAboveIv)

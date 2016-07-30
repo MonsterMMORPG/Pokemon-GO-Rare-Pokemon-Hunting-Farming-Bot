@@ -108,7 +108,7 @@ namespace PoGo.NecroBot.CLI
         public double DefaultLongitude = 34.63328;
         public int DelayBetweenPokemonCatch = 2000;
         public int DelayBetweenPlayerActions = 5000;
-        public float EvolveAboveIvValue = 95;
+        public float EvolveAboveIvValue = 50;
         public bool EvolveAllPokemonAboveIv = false;
         public bool EvolveAllPokemonWithEnoughCandy = true;
         public int UseLuckyEggsMinPokemonAmount = 30;
@@ -119,8 +119,8 @@ namespace PoGo.NecroBot.CLI
         public bool UseGpxPathing = false;
         public double WalkingSpeedInKilometerPerHour = 130;
         public int MaxTravelDistanceInMeters = 10000;
-        public int KeepMinCp = 2500;
-        public int KeepMinDuplicatePokemon = 1;
+        public int KeepMinCp = 5000;
+        public int KeepMinDuplicatePokemon = 2;
         public float KeepMinIvPercentage = 95;
         public bool KeepPokemonsThatCanEvolve = false;
         public bool PrioritizeIvOverCp = true;
@@ -171,41 +171,41 @@ namespace PoGo.NecroBot.CLI
 
         public List<PokemonId> PokemonsNotToTransfer = new List<PokemonId>
         {
-            PokemonId.Aerodactyl,
-            PokemonId.Venusaur,
-            PokemonId.Charizard,
-            PokemonId.Blastoise,
-            PokemonId.Nidoqueen,
-            PokemonId.Nidoking,
-            PokemonId.Clefable,
-            PokemonId.Vileplume,
-            PokemonId.Arcanine,
-            PokemonId.Poliwrath,
-            PokemonId.Machamp,
-            PokemonId.Victreebel,
-            PokemonId.Golem,
-            PokemonId.Slowbro,
-            PokemonId.Farfetchd,
-            PokemonId.Muk,
-            PokemonId.Exeggutor,
-            PokemonId.Lickitung,
-            PokemonId.Chansey,
-            PokemonId.Kangaskhan,
-            PokemonId.MrMime,
-            PokemonId.Gyarados,
-            PokemonId.Lapras,
-            PokemonId.Ditto,
-            PokemonId.Vaporeon,
-            PokemonId.Jolteon,
-            PokemonId.Flareon,
-            PokemonId.Porygon,
-            PokemonId.Snorlax,
-            PokemonId.Articuno,
-            PokemonId.Zapdos,
-            PokemonId.Moltres,
-            PokemonId.Dragonite,
-            PokemonId.Mewtwo,
-            PokemonId.Mew
+            //PokemonId.Aerodactyl,
+            //PokemonId.Venusaur,
+            //PokemonId.Charizard,
+            //PokemonId.Blastoise,
+            //PokemonId.Nidoqueen,
+            //PokemonId.Nidoking,
+            //PokemonId.Clefable,
+            //PokemonId.Vileplume,
+            //PokemonId.Arcanine,
+            //PokemonId.Poliwrath,
+            //PokemonId.Machamp,
+            //PokemonId.Victreebel,
+            //PokemonId.Golem,
+            //PokemonId.Slowbro,
+            //PokemonId.Farfetchd,
+            //PokemonId.Muk,
+            //PokemonId.Exeggutor,
+            //PokemonId.Lickitung,
+            //PokemonId.Chansey,
+            //PokemonId.Kangaskhan,
+            //PokemonId.MrMime,
+            //PokemonId.Gyarados,
+            //PokemonId.Lapras,
+            //PokemonId.Ditto,
+            //PokemonId.Vaporeon,
+            //PokemonId.Jolteon,
+            //PokemonId.Flareon,
+            //PokemonId.Porygon,
+            //PokemonId.Snorlax,
+            //PokemonId.Articuno,
+            //PokemonId.Zapdos,
+            //PokemonId.Moltres,
+            //PokemonId.Dragonite,
+            //PokemonId.Mewtwo,
+            //PokemonId.Mew
              //PokemonId.Golduck,
         };
 
