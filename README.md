@@ -1,8 +1,9 @@
 # Original fork [read description and FAQ there!] : https://github.com/NecronomiconCoding/NecroBot
 # Lvl 32+ Pokemon GO Accounts Giveaway Events: http://www.monstermmorpg.com/Pokemon-GO-Giveaways 
 # www.pokemonpets.com free Pokemon MMO RPG
+[![Pokemon Style Monster Game MonsterMMORPG](Static/pokemon-mmo-rpg-online-game-pokemonpets-battle.gif)](http://www.pokemonpets.com/Register)
 # www.monstermmorpg.com free Monster MMO RPG
-[![Pokemon Style Monster Game MonsterMMORPG](Static/monster-mmorpg-battle-animation.gif)](http://www.monstermmorpg.com){:target="_blank"}
+[![Pokemon Style Monster Game MonsterMMORPG](Static/pokemon-mmo-rpg-online-game-monstermmorpg-battle.gif)](http://www.monstermmorpg.com/Register)
 
 ## Features? 
 - More advanced Pokemon hunting by PokemonGo Map
