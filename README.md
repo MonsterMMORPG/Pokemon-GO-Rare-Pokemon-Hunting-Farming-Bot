@@ -26,11 +26,11 @@
 - Open the APP with Microsoft Visual Studio 2015
 - Before starting the APP with F5, first go to Settings.cs which is located under PoGo.NecroBot.Logic
 - Make all the settings you wish. Set your location, item counts, IV, evolve etc
-- 
+- *
 - Once you have the setup Click F5 run app first time then close it
 - Then go to debug =>  config folder and enter your password username into auth.json file (do not worry i have checked files and these are secure)
 - For deciding which rare Pokemon you want as priority, inside Settings.cs look for ```lstPriorityPokemon``` and change the PokemonId as you wish 
--
+- *
 - Now you need to install PokemonGo Map project in order to utilize our rare farming and priority farming
 
 <p>You need to install PokemonGo Map if you want to use Pokemon Farming + Rare Pokemon Farming features</p>
