@@ -21,7 +21,8 @@ namespace PoGo.NecroBot.Logic
 {
     internal class AuthSettings
     {
-        [JsonIgnore] private string _filePath;
+        [JsonIgnore]
+        private string _filePath;
 
         public AuthType AuthType;
         public string GooglePassword;
@@ -43,7 +44,7 @@ namespace PoGo.NecroBot.Logic
                     var input = File.ReadAllText(_filePath);
 
                     var settings = new JsonSerializerSettings();
-                    settings.Converters.Add(new StringEnumConverter {CamelCaseText = true});
+                    settings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
 
                     JsonConvert.PopulateObject(input, this, settings);
                 }
@@ -79,7 +80,7 @@ namespace PoGo.NecroBot.Logic
         public void Save(string path)
         {
             var output = JsonConvert.SerializeObject(this, Formatting.Indented,
-                new StringEnumConverter {CamelCaseText = true});
+                new StringEnumConverter { CamelCaseText = true });
 
             var folder = Path.GetDirectoryName(path);
             if (folder != null && !Directory.Exists(folder))
@@ -393,9 +394,11 @@ namespace PoGo.NecroBot.Logic
 
 
 
-        [JsonIgnore] public string ProfileConfigPath;
+        [JsonIgnore]
+        public string ProfileConfigPath;
 
-        [JsonIgnore] public string ProfilePath;
+        [JsonIgnore]
+        public string ProfilePath;
 
         public bool RenameOnlyAboveIv = true;
         public bool RenamePokemon = false;
@@ -418,7 +421,7 @@ namespace PoGo.NecroBot.Logic
 
         public static List<string> lstPokeStopLocations = new List<string> { };
         public static int irLastPokeStopIndex = 0;
-        public static List<int> lstPriorityPokemon = new List<int> { 150, 149, 151, 146, 145, 143, 59, 131, 144, 103, 134, 130, 136, 89, 6, 80, 68, 3, 9, 71, 62, 45, 31, 34, 36, 55, 76, 126, 110, 112, 139, 73, 78, 38, 97, 121, 2, 3, 5, 6, 8, 9, 26, 31, 34, 36, 45, 65, 68, 71, 76, 83, 89, 97, 105, 107, 108, 110, 113, 115, 124, 128, 131, 132, 135, 137, 139, 141, 142, 144, 145, 146 };
+        public static List<int> lstPriorityPokemon = new List<int> { 150, 149, 151, 146, 145, 143, 59, 131, 144, 147, 103, 134, 130, 136, 89, 6, 80, 68, 3, 9, 71, 62, 45, 31, 34, 36, 55, 76, 126, 110, 112, 139, 73, 78, 38, 97, 121, 2, 3, 5, 6, 8, 9, 26, 31, 34, 36, 45, 65, 68, 71, 76, 83, 89, 97, 105, 107, 108, 110, 113, 115, 124, 128, 131, 132, 135, 137, 139, 141, 142, 144, 145, 146 };
         public static bool blEnableRareHunt = true;
         public static bool blCriticalBall = false;
         public static int irCritical_Ball_Lowest = 25;
@@ -463,7 +466,7 @@ namespace PoGo.NecroBot.Logic
 
                     string srTempAuth = string.Format(srAuth, lstParams[1], lstParams[2]);
                     string srPath = @"D:\74 pokemon go\hesap botlar\{0}\Config\auth.json";
-                    File.WriteAllText( string.Format(srPath, lstParams[0]), srTempAuth);
+                    File.WriteAllText(string.Format(srPath, lstParams[0]), srTempAuth);
                 }
             }
 
@@ -475,7 +478,7 @@ namespace PoGo.NecroBot.Logic
                     var input = File.ReadAllText(configFile);
 
                     var jsonSettings = new JsonSerializerSettings();
-                    jsonSettings.Converters.Add(new StringEnumConverter {CamelCaseText = true});
+                    jsonSettings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
                     jsonSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
                     jsonSettings.DefaultValueHandling = DefaultValueHandling.Populate;
 
@@ -532,7 +535,7 @@ namespace PoGo.NecroBot.Logic
         public void Save(string fullPath)
         {
             var output = JsonConvert.SerializeObject(this, Formatting.Indented,
-                new StringEnumConverter {CamelCaseText = true});
+                new StringEnumConverter { CamelCaseText = true });
 
             var folder = Path.GetDirectoryName(fullPath);
             if (folder != null && !Directory.Exists(folder))
@@ -580,7 +583,7 @@ namespace PoGo.NecroBot.Logic
         {
             get
             {
-                return _settings.DefaultLatitude + _rand.NextDouble()*((double) _settings.MaxSpawnLocationOffset/111111);
+                return _settings.DefaultLatitude + _rand.NextDouble() * ((double)_settings.MaxSpawnLocationOffset / 111111);
             }
 
             set { _settings.DefaultLatitude = value; }
@@ -591,8 +594,8 @@ namespace PoGo.NecroBot.Logic
             get
             {
                 return _settings.DefaultLongitude +
-                       _rand.NextDouble()*
-                       ((double) _settings.MaxSpawnLocationOffset/111111/Math.Cos(_settings.DefaultLatitude));
+                       _rand.NextDouble() *
+                       ((double)_settings.MaxSpawnLocationOffset / 111111 / Math.Cos(_settings.DefaultLatitude));
             }
 
             set { _settings.DefaultLongitude = value; }
