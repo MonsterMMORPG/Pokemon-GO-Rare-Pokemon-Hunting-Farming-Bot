@@ -11,6 +11,7 @@ using PokemonGo.RocketAPI.Enums;
 using POGOProtos.Enums;
 using POGOProtos.Inventory.Item;
 using PoGo.NecroBot.Logic.Logging;
+using System.Linq;
 #endregion
 
 namespace PoGo.NecroBot.CLI
@@ -50,7 +51,7 @@ namespace PoGo.NecroBot.CLI
                     Save(_filePath);
                 }
             }
-            catch(Newtonsoft.Json.JsonReaderException exception)
+            catch (Newtonsoft.Json.JsonReaderException exception)
             {
                 if (exception.Message.Contains("Unexpected character") && exception.Message.Contains("PtcUsername"))
                     Logger.Write("JSON Exception: You need to properly configure your PtcUsername using quotations.", LogLevel.Error);
@@ -102,7 +103,7 @@ namespace PoGo.NecroBot.CLI
         [JsonIgnore]
         public string GeneralConfigPath;
 
-        public bool AutoUpdate = true;
+        public bool AutoUpdate = false;
         public double DefaultAltitude = 10;
         public double DefaultLatitude = 36.80204;
         public double DefaultLongitude = 34.63328;
@@ -206,7 +207,7 @@ namespace PoGo.NecroBot.CLI
             //PokemonId.Dragonite,
             //PokemonId.Mewtwo,
             //PokemonId.Mew
-             //PokemonId.Golduck,
+            //PokemonId.Golduck,
         };
 
         public List<PokemonId> PokemonsToEvolve = new List<PokemonId>
@@ -333,11 +334,16 @@ namespace PoGo.NecroBot.CLI
                 PokemonId.Moltres,
                 PokemonId.Dragonite,
                 PokemonId.Mewtwo,
-                PokemonId.Mew    
+                PokemonId.Mew
             }
         };
 
         public static GlobalSettings Default => new GlobalSettings();
+
+        public static string srSettingsDirectory = @"D:\74 pokemon go\settings\";
+
+        public static List<string> lstPokeStopLocations = new List<string> { };
+        public static int irLastPokeStopIndex = 0;
 
         public static GlobalSettings Load(string path)
         {
@@ -346,30 +352,41 @@ namespace PoGo.NecroBot.CLI
             var profileConfigPath = Path.Combine(profilePath, "config");
             var configFile = Path.Combine(profileConfigPath, "config.json");
 
-            //if (File.Exists(configFile))
-            //{
-            //    try
-            //    {
-            //        //if the file exists, load the settings
-            //        var input = File.ReadAllText(configFile);
+            bool blOverWriteSettings = false;
+            if (File.Exists(srSettingsDirectory + "overwrite.txt"))
+            {
+                blOverWriteSettings = true;
+            }
 
-            //        var jsonSettings = new JsonSerializerSettings();
-            //        jsonSettings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
-            //        jsonSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
-            //        jsonSettings.DefaultValueHandling = DefaultValueHandling.Populate;
+            if (File.Exists(srSettingsDirectory + "predefined_pokestop_locs.txt"))
+            {
+                lstPokeStopLocations = File.ReadAllLines(srSettingsDirectory + "predefined_pokestop_locs.txt").ToList();
+            }
 
-            //        settings = JsonConvert.DeserializeObject<GlobalSettings>(input, jsonSettings);
-            //    }
-            //    catch (Newtonsoft.Json.JsonReaderException exception)
-            //    {
-            //        Logger.Write("JSON Exception: " + exception.Message, LogLevel.Error);
-            //        return null;
-            //    }
-            //}
-            //else
-            //{
+            if (File.Exists(configFile) && blOverWriteSettings == false)
+            {
+                try
+                {
+                    //if the file exists, load the settings
+                    var input = File.ReadAllText(configFile);
+
+                    var jsonSettings = new JsonSerializerSettings();
+                    jsonSettings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
+                    jsonSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
+                    jsonSettings.DefaultValueHandling = DefaultValueHandling.Populate;
+
+                    settings = JsonConvert.DeserializeObject<GlobalSettings>(input, jsonSettings);
+                }
+                catch (Newtonsoft.Json.JsonReaderException exception)
+                {
+                    Logger.Write("JSON Exception: " + exception.Message, LogLevel.Error);
+                    return null;
+                }
+            }
+            else
+            {
                 settings = new GlobalSettings();
-            //}
+            }
 
             if (settings.WebSocketPort == 0)
             {
@@ -381,12 +398,12 @@ namespace PoGo.NecroBot.CLI
                 settings.PokemonToSnipe = Default.PokemonToSnipe;
             }
 
-            if(settings.RenameTemplate == null)
+            if (settings.RenameTemplate == null)
             {
                 settings.RenameTemplate = Default.RenameTemplate;
             }
 
-            if(settings.SnipeLocationServer == null)
+            if (settings.SnipeLocationServer == null)
             {
                 settings.SnipeLocationServer = Default.SnipeLocationServer;
             }
@@ -400,10 +417,10 @@ namespace PoGo.NecroBot.CLI
             settings.Save(configFile);
             settings.Auth.Load(Path.Combine(profileConfigPath, "auth.json"));
 
-            //if (firstRun)
-            //{
-            //    return null;
-            //}
+            if (firstRun && blOverWriteSettings == false)
+            {
+                return null;
+            }
 
             return settings;
         }

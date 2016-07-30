@@ -14,6 +14,7 @@ using PoGo.NecroBot.Logic.Utils;
 using PokemonGo.RocketAPI.Extensions;
 using POGOProtos.Map.Fort;
 using POGOProtos.Networking.Responses;
+using PoGo.NecroBot.CLI;
 
 #endregion
 
@@ -22,6 +23,33 @@ namespace PoGo.NecroBot.Logic.Tasks
     public static class FarmPokestopsTask
     {
         public static int TimesZeroXPawarded;
+
+        private static async Task resetLocation(ISession session, CancellationToken cancellationToken)
+        {
+            if (GlobalSettings.lstPokeStopLocations.Count < 1)
+                return;
+
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("EN-US");
+
+            if (GlobalSettings.irLastPokeStopIndex >= GlobalSettings.lstPokeStopLocations.Count)
+            {
+                GlobalSettings.irLastPokeStopIndex = 0;
+            }
+
+            Logger.Write("Re setting global location no Poke Stop index " + GlobalSettings.irLastPokeStopIndex + " : "
+                + GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex], LogLevel.Self, ConsoleColor.Yellow);
+
+            double dblLat = Convert.ToDouble(GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex].Split(':')[0]);
+            double dblLng = Convert.ToDouble(GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex].Split(':')[1]);
+            GlobalSettings.irLastPokeStopIndex++;
+
+            session.Settings.DefaultLatitude = dblLat;
+            session.Settings.DefaultLongitude = dblLng;
+
+            await session.Navigation.HumanLikeWalking(
+            new GeoCoordinate(session.Settings.DefaultLatitude, session.Settings.DefaultLongitude),
+            session.LogicSettings.WalkingSpeedInKilometerPerHour, null, cancellationToken);
+        }
 
         public static async Task Execute(ISession session, CancellationToken cancellationToken)
         {
@@ -52,6 +80,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             if (pokestopList.Count <= 0)
             {
+                await resetLocation(session, cancellationToken);
                 session.EventDispatcher.Send(new WarnEvent
                 {
                     Message = session.Translation.GetTranslation(TranslationString.FarmPokestopsNoUsableFound)

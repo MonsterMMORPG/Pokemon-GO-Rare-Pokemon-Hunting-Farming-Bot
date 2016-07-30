@@ -86,7 +86,9 @@ namespace PoGo.NecroBot.CLI
             session.Navigation.UpdatePositionEvent +=
                 (lat, lng) => session.EventDispatcher.Send(new UpdatePositionEvent {Latitude = lat, Longitude = lng});
 
+
             machine.AsyncStart(new VersionCheckState(), session);
+
             if(session.LogicSettings.UseSnipeLocationServer)
                 SnipePokemonTask.AsyncStart(session);
 
