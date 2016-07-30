@@ -479,6 +479,8 @@ namespace PoGo.NecroBot.Logic
                     var familyCandy = pokemonFamilies.Single(x => settings.FamilyId == x.FamilyId);
                     if (familyCandy.Candy_ < 1)
                         continue;
+                    if (PokemonInfo.CalculateMaxCp(vrPokemon) == vrPokemon.Cp)
+                        continue;
                     lstReturn.Add(vrPokemon);
                 }
             }
