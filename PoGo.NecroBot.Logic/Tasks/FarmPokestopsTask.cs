@@ -241,7 +241,7 @@ namespace PoGo.NecroBot.Logic.Tasks
                 return lstPokeInfo;
             }
 
-            string sql = "select * from pokemon where disappear_time > '" + DateTime.UtcNow.ToString("yyyy-MM-dd H:mm:ss") + "' ";
+            string sql = "select * from pokemon where disappear_time > '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
