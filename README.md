@@ -18,6 +18,7 @@
 - Settings are optimized for Level 30+ farming
 - More logical PowerUp/LevelUp Pokemon logic
 - Pre-defined PokeStops location input. Thus, it can move to next PokeStop location once you are out of PokeBalls
+- Much better PokeStops farming logic
 
 ## Why separate project?
 - I have started as a separate project since i am still a total noob of GitHub code management system
