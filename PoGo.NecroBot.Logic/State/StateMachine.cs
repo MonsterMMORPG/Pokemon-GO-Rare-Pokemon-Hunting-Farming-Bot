@@ -28,6 +28,7 @@ namespace PoGo.NecroBot.Logic.State
         public async Task Start(IState initialState, Session session,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            Logging.Logger.Write("Version 1.0.0 : 2016.07.31 14:19", Logging.LogLevel.Self, ConsoleColor.Yellow);
             var state = initialState;
             do
             {
@@ -44,12 +45,12 @@ namespace PoGo.NecroBot.Logic.State
                 }
                 catch (OperationCanceledException)
                 {
-                    session.EventDispatcher.Send(new ErrorEvent {Message = "Current Operation was canceled."});
+                    session.EventDispatcher.Send(new ErrorEvent { Message = "Current Operation was canceled." });
                     state = _initialState;
                 }
                 catch (Exception ex)
                 {
-                    session.EventDispatcher.Send(new ErrorEvent {Message = ex.ToString()});
+                    session.EventDispatcher.Send(new ErrorEvent { Message = ex.ToString() });
                     state = _initialState;
                 }
             } while (state != null);
