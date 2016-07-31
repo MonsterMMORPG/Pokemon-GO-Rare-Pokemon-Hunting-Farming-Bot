@@ -57,10 +57,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             if (pokestopList.Count <= 0)
             {
                 await resetLocation(session, cancellationToken);
-                //session.EventDispatcher.Send(new WarnEvent
-                //{
-                //    Message = session.Translation.GetTranslation(TranslationString.FarmPokestopsNoUsableFound)
-                //});
+                pokestopList = await GetPokeStops(session);
             }
 
             session.EventDispatcher.Send(new PokeStopListEvent { Forts = pokestopList });
@@ -223,7 +220,9 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             var pokeStops2 = mapObjects.MapCells.SelectMany(i => i.Forts).ToList();
 
-            Logging.Logger.Write("found total PokeStops Count: " + pokeStops2.Count, LogLevel.Self, ConsoleColor.DarkCyan);
+            Logging.Logger.Write("found total PokeStops Count: " + pokeStops2.Count+" current location "+session.Client.CurrentLatitude +" , "+
+                session.Client.CurrentLongitude
+                , LogLevel.Self, ConsoleColor.DarkCyan);
 
             // Wasn't sure how to make this pretty. Edit as needed.
             var pokeStops = mapObjects.MapCells.SelectMany(i => i.Forts)
@@ -425,10 +424,6 @@ async () =>
       session.LogicSettings.WalkingSpeedInKilometerPerHour,
       async () =>
       {
-          // Catch normal map Pokemon
-          await CatchNearbyPokemonsTask.Execute(session, cancellationToken);
-          //Catch Incense Pokemon
-          await CatchIncensePokemonsTask.Execute(session, cancellationToken);
           return true;
       }, cancellationToken);
         }

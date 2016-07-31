@@ -239,6 +239,15 @@ namespace PoGo.NecroBot.Logic
             var currentAmountOfUltraballs = await GetItemAmountByType(ItemId.ItemUltraBall);
             var currentAmountOfMasterballs = await GetItemAmountByType(ItemId.ItemMasterBall);
 
+            if ((currentAmountOfPokeballs + currentAmountOfGreatballs + currentAmountOfUltraballs) < GlobalSettings.irCritical_Ball_Lowest)
+            {
+                GlobalSettings.blCriticalBall = true;
+            }
+            if ((currentAmountOfPokeballs + currentAmountOfGreatballs + currentAmountOfUltraballs) > GlobalSettings.irCritical_Ball_Upper)
+            {
+                GlobalSettings.blCriticalBall = false;
+            }
+
             Logger.Write(session.Translation.GetTranslation(TranslationString.CurrentPokeballInv,
                 currentAmountOfPokeballs, currentAmountOfGreatballs, currentAmountOfUltraballs,
                 currentAmountOfMasterballs));

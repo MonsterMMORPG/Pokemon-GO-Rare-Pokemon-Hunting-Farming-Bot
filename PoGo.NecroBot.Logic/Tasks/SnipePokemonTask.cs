@@ -99,9 +99,17 @@ namespace PoGo.NecroBot.Logic.Tasks
             pokeBallsCount += await session.Inventory.GetItemAmountByType(ItemId.ItemUltraBall);
             pokeBallsCount += await session.Inventory.GetItemAmountByType(ItemId.ItemMasterBall);
 
+            //if ((pokeBallsCount + greatBallsCount + ultraBallsCount) < GlobalSettings.irCritical_Ball_Lowest)
+            //{
+            //    GlobalSettings.blCriticalBall = true;
+            //}
+            //if ((pokeBallsCount + greatBallsCount + ultraBallsCount) > GlobalSettings.irCritical_Ball_Upper)
+            //{
+            //    GlobalSettings.blCriticalBall = false;
+            //}
+
             if (pokeBallsCount < minPokeballs)
             {
-                GlobalSettings.blCriticalBall = true;
                 session.EventDispatcher.Send(new NoticeEvent
                 {
                     Message =

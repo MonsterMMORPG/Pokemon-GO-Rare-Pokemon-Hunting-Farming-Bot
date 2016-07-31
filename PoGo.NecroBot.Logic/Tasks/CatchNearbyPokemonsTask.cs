@@ -34,9 +34,18 @@ namespace PoGo.NecroBot.Logic.Tasks
                 var ultraBallsCount = await session.Inventory.GetItemAmountByType(ItemId.ItemUltraBall);
                 var masterBallsCount = await session.Inventory.GetItemAmountByType(ItemId.ItemMasterBall);
 
-                if (pokeBallsCount + greatBallsCount + ultraBallsCount + masterBallsCount == 0)
+
+                if ((pokeBallsCount + greatBallsCount + ultraBallsCount) < GlobalSettings.irCritical_Ball_Lowest)
                 {
                     GlobalSettings.blCriticalBall = true;
+                }
+                if ((pokeBallsCount + greatBallsCount + ultraBallsCount) > GlobalSettings.irCritical_Ball_Upper)
+                {
+                    GlobalSettings.blCriticalBall = false;
+                }
+
+                if (pokeBallsCount + greatBallsCount + ultraBallsCount + masterBallsCount == 0)
+                {
                     Logger.Write(session.Translation.GetTranslation(TranslationString.ZeroPokeballInv));
                     return;
                 }

@@ -28,7 +28,7 @@ namespace PoGo.NecroBot.Logic.State
         public async Task Start(IState initialState, Session session,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Logging.Logger.Write("Version 1.0.1 : 2016.07.31 16:55", Logging.LogLevel.Self, ConsoleColor.Yellow);
+            Logging.Logger.Write("Version 1.0.2 : 2016.07.31 17:46", Logging.LogLevel.Self, ConsoleColor.Yellow);
             var state = initialState;
             do
             {
