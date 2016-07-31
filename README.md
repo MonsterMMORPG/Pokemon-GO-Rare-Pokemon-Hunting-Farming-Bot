@@ -53,6 +53,7 @@
 - Make sure you edit Settings.cs before start. Or edit the generated file inside debug => config folder
 - Right click and check installed nuget tools for all the projects
 - Delete all text files in your debug folder and restart the app
+- Make sure that you have run the PokemonGO Map project and in that folder pogom file is composed which is the DB file
 
 ## What is the logic behind the Pokemon and Rare Pokemon farming
 - It reads the live data from the PokemonGo Map database
