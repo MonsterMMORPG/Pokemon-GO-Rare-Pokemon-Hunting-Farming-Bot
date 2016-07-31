@@ -101,6 +101,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             if (pokeBallsCount < minPokeballs)
             {
+                GlobalSettings.blCriticalBall = true;
                 session.EventDispatcher.Send(new NoticeEvent
                 {
                     Message =

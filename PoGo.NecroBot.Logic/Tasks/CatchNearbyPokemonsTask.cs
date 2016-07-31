@@ -36,6 +36,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
                 if (pokeBallsCount + greatBallsCount + ultraBallsCount + masterBallsCount == 0)
                 {
+                    GlobalSettings.blCriticalBall = true;
                     Logger.Write(session.Translation.GetTranslation(TranslationString.ZeroPokeballInv));
                     return;
                 }
