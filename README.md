@@ -17,6 +17,7 @@
 - Never gets soft banned because it always do human walking with the speed limit you have defined
 - Settings are optimized for Level 30+ farming
 - More logical PowerUp/LevelUp Pokemon logic
+- Pre-defined PokeStops location input. Thus, it can move to next PokeStop location once you are out of PokeBalls
 
 ## Why separate project?
 - I have started as a separate project since i am still a total noob of GitHub code management system
@@ -43,6 +44,10 @@
 - *
 - Now you have to point your PokemonGo Map installation folder in our application
 - In Settings.cs file change ```srPokemonGoMap_Directory``` variable to your installation folder 
+-* 
+- For using pre-defined PokeStop locations, prepare a text file type the cordinates each line like this 36.805327:34.6360770 and point that location to variable in the Settings.cs file **srSettingsDirectory**
+- Name that text file as **predefined_pokestop_locs.txt**
+- *
 - Ready to rock :D
 
 ## Common errors and solutions
