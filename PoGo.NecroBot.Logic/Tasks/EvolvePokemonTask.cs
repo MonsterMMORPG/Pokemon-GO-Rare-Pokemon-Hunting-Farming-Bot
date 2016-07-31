@@ -22,22 +22,29 @@ namespace PoGo.NecroBot.Logic.Tasks
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var pokemonPowerUpTask = await session.Inventory.GetPokemonToPowerUp(session.LogicSettings.PokemonsToEvolve);
-            var pokemonPowerUp = pokemonPowerUpTask.ToList();
-
-            Logging.Logger.Write("Starting Power UP Pokemon...", Logging.LogLevel.Self, ConsoleColor.Yellow);
-
-            foreach (var vrPokemon in pokemonPowerUp)
+            if (GlobalSettings.blUpgrade_Usefull_Pokemon == true)
             {
-                Logging.Logger.Write($"Upgrading Pokemon {vrPokemon.PokemonId} , Up Count: {vrPokemon.NumUpgrades} , IV: {PokemonInfo.CalculatePokemonPerfection(vrPokemon)} CP: {vrPokemon.Cp} , CP Multi: {vrPokemon.CpMultiplier} , CP Add Multi: {vrPokemon.AdditionalCpMultiplier}.....", Logging.LogLevel.Self, ConsoleColor.DarkYellow);
+                var pokemonPowerUpTask = await session.Inventory.GetPokemonToPowerUp(session.LogicSettings.PokemonsToEvolve);
+                var pokemonPowerUp = pokemonPowerUpTask.ToList();
 
-                while (true)
+                Logging.Logger.Write("Starting Power UP Pokemon...", Logging.LogLevel.Self, ConsoleColor.Yellow);
+
+                foreach (var vrPokemon in pokemonPowerUp)
                 {
-                    var evolveResponse = await session.Client.Inventory.UpgradePokemon(vrPokemon.Id);
-                    if (evolveResponse.Result != POGOProtos.Networking.Responses.UpgradePokemonResponse.Types.Result.Success)
-                        break;
-             
+                    Logging.Logger.Write($"Upgrading Pokemon {vrPokemon.PokemonId} , Up Count: {vrPokemon.NumUpgrades} , IV: {PokemonInfo.CalculatePokemonPerfection(vrPokemon)} CP: {vrPokemon.Cp} , CP Multi: {vrPokemon.CpMultiplier} , CP Add Multi: {vrPokemon.AdditionalCpMultiplier}.....", Logging.LogLevel.Self, ConsoleColor.DarkYellow);
+
+                    while (true)
+                    {
+                        var evolveResponse = await session.Client.Inventory.UpgradePokemon(vrPokemon.Id);
+                        if (evolveResponse.Result != POGOProtos.Networking.Responses.UpgradePokemonResponse.Types.Result.Success)
+                            break;
+
+                    }
                 }
+            }
+            else
+            {
+                Logging.Logger.Write("Pokemon Upgrade task disabled. Enable from Settings.cs blUpgrade_Usefull_Pokemon = true", Logging.LogLevel.Self, ConsoleColor.DarkYellow);
             }
 
             var pokemonToEvolveTask = await session.Inventory.GetPokemonToEvolve(session.LogicSettings.PokemonsToEvolve);
@@ -94,7 +101,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             await session.Client.Inventory.UseItemXpBoost();
             await session.Inventory.RefreshCachedInventory();
 
-            if (luckyEgg != null) session.EventDispatcher.Send(new UseLuckyEggEvent {Count = luckyEgg.Count});
+            if (luckyEgg != null) session.EventDispatcher.Send(new UseLuckyEggEvent { Count = luckyEgg.Count });
 
             DelayingUtils.Delay(session.LogicSettings.DelayBetweenPokemonCatch, 2000);
         }

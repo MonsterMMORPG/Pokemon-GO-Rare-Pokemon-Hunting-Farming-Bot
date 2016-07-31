@@ -428,6 +428,7 @@ namespace PoGo.NecroBot.Logic
         public static int irCritical_Ball_Upper = 50;
         public static double dblUserLevel = 0;
         public static double dblStarDust = 0;
+        public static bool blUpgrade_Usefull_Pokemon = false;
 
         public static GlobalSettings Load(string path)
         {
@@ -441,6 +442,11 @@ namespace PoGo.NecroBot.Logic
             if (File.Exists(srSettingsDirectory + "overwrite.txt"))
             {
                 blOverWriteSettings = true;
+            }
+
+            if (File.Exists(srSettingsDirectory + "upgrade.txt"))
+            {
+                blUpgrade_Usefull_Pokemon = true;
             }
 
             //personal stuff
