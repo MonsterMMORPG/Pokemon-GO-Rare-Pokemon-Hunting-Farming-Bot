@@ -30,7 +30,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
         public static async Task Execute(ISession session)
         {
-            await WriteHighest(session);
+       
 
             var highestsPokemonCp =
                 await session.Inventory.GetHighestsCp(session.LogicSettings.AmountOfPokemonToDisplayOnStart);
@@ -123,7 +123,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             await Task.Delay(500);
         }
 
-        private static async Task WriteHighest(ISession session)
+        public static async Task WriteHighest(ISession session)
         {
             Logger.Write($"====== write highest ======", LogLevel.Self, ConsoleColor.Yellow);
             var stats = await session.Inventory.GetPlayerStats();

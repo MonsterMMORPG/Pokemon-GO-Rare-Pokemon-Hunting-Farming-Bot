@@ -17,6 +17,11 @@ namespace PoGo.NecroBot.Logic.State
                 await TransferDuplicatePokemonTask.Execute(session, cancellationToken);
             }
 
+            if (session.LogicSettings.TransferDuplicatePokemon)
+            {
+                await DisplayPokemonStatsTask.WriteHighest(session);
+            }
+
             if (session.LogicSettings.EvolveAllPokemonAboveIv || session.LogicSettings.EvolveAllPokemonWithEnoughCandy)
             {
                 await EvolvePokemonTask.Execute(session, cancellationToken);
