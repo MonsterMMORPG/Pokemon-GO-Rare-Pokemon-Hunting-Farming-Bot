@@ -50,8 +50,20 @@ namespace PoGo.NecroBot.Logic.Tasks
             var pokemonToEvolveTask = await session.Inventory.GetPokemonToEvolve(session.LogicSettings.PokemonsToEvolve);
             var pokemonToEvolve = pokemonToEvolveTask.ToList();
 
+            session.EventDispatcher.Send( new EvolveCountEvent
+            {
+                Evolves = pokemonToEvolve.Count
+            } );
+
             if (pokemonToEvolve.Any())
             {
+                if (session.LogicSettings.KeepPokemonsThatCanEvolve)
+                {
+                    var myPokemons = await session.Inventory.GetPokemons();
+                    if (session.Profile.PlayerData.MaxPokemonStorage * session.LogicSettings.EvolveKeptPokemonsAtStorageUsagePercentage > myPokemons.Count())
+                        return;
+                }
+
                 var inventoryContent = await session.Inventory.GetItems();
 
                 var luckyEggs = inventoryContent.Where(p => p.ItemId == ItemId.ItemLuckyEgg);
@@ -68,6 +80,10 @@ namespace PoGo.NecroBot.Logic.Tasks
                     else
                     {
                         // Wait until we have enough pokemon
+                        session.EventDispatcher.Send(new NoticeEvent()
+                        {
+                            Message = $"Not enough Pokemons to trigger a lucky  egg. Waiting for {session.LogicSettings.UseLuckyEggsMinPokemonAmount - pokemonToEvolve.Count} more ({ pokemonToEvolve.Count}/{session.LogicSettings.UseLuckyEggsMinPokemonAmount})"
+                        });
                         return;
                     }
                 }

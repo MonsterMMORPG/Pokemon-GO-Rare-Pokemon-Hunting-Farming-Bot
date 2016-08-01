@@ -30,7 +30,12 @@ namespace PoGo.NecroBot.Logic.Tasks
 
         public static async Task Execute(ISession session)
         {
+<<<<<<< HEAD
        
+=======
+            var myPokemonFamilies = await session.Inventory.GetPokemonFamilies();
+            var myPokeSettings = await session.Inventory.GetPokemonSettings();
+>>>>>>> refs/remotes/upstream/master
 
             var highestsPokemonCp =
                 await session.Inventory.GetHighestsCp(session.LogicSettings.AmountOfPokemonToDisplayOnStart);
@@ -41,7 +46,8 @@ namespace PoGo.NecroBot.Logic.Tasks
                     pokemon =>
                         Tuple.Create(pokemon, PokemonInfo.CalculateMaxCp(pokemon),
                             PokemonInfo.CalculatePokemonPerfection(pokemon), PokemonInfo.GetLevel(pokemon),
-                            PokemonInfo.GetPokemonMove1(pokemon), PokemonInfo.GetPokemonMove2(pokemon))).ToList();
+                            PokemonInfo.GetPokemonMove1(pokemon), PokemonInfo.GetPokemonMove2(pokemon),
+                            PokemonInfo.GetCandy(pokemon, myPokemonFamilies, myPokeSettings))).ToList();
             var pokemonPairedWithStatsCpForUpgrade =
                 highestsPokemonCpForUpgrade.Select(
                     pokemon =>
@@ -57,7 +63,8 @@ namespace PoGo.NecroBot.Logic.Tasks
                     pokemon =>
                         Tuple.Create(pokemon, PokemonInfo.CalculateMaxCp(pokemon),
                             PokemonInfo.CalculatePokemonPerfection(pokemon), PokemonInfo.GetLevel(pokemon),
-                            PokemonInfo.GetPokemonMove1(pokemon), PokemonInfo.GetPokemonMove2(pokemon))).ToList();
+                            PokemonInfo.GetPokemonMove1(pokemon), PokemonInfo.GetPokemonMove2(pokemon),
+                            PokemonInfo.GetCandy(pokemon, myPokemonFamilies, myPokeSettings))).ToList();
             var pokemonPairedWithStatsIvForUpgrade =
                 highestsPokemonIvForUpgrade.Select(
                     pokemon =>
@@ -113,10 +120,11 @@ namespace PoGo.NecroBot.Logic.Tasks
             {
                 const string dumpFileName = "PokeBagStats";
                 Dumper.ClearDumpFile(session, dumpFileName);
+                Dumper.Dump(session, "pokemonid,pokemonlevel,cp,perfection,stamina,staminamax,move1,move2,candy,ownername,origin,heightm,weightkg,individualattack,individualdefense,individualstamina,cpmultiplier,battlesattacked,battlesdefended,creationtimems,numupgrades,additionalcpmultiplier,favorite,nickname", dumpFileName);
                 foreach (var pokemon in allPokemonInBag)
                 {
                     Dumper.Dump(session,
-                        $"NAME: {pokemon.PokemonId.ToString().PadRight(16, ' ')}Lvl: {PokemonInfo.GetLevel(pokemon).ToString("00")}\t\tCP: {pokemon.Cp.ToString().PadRight(8, ' ')}\t\t IV: {PokemonInfo.CalculatePokemonPerfection(pokemon).ToString("0.00")}%\t\t\tMOVE1: {pokemon.Move1}\t\t\tMOVE2: {pokemon.Move2}",
+                        $"{pokemon.PokemonId},{PokemonInfo.GetLevel(pokemon)},{pokemon.Cp},{PokemonInfo.CalculatePokemonPerfection(pokemon)},{pokemon.Stamina},{pokemon.StaminaMax},{pokemon.Move1},{pokemon.Move2},{PokemonInfo.GetCandy(pokemon, myPokemonFamilies, myPokeSettings)},{pokemon.OwnerName},{pokemon.Origin},{pokemon.HeightM},{pokemon.WeightKg},{pokemon.IndividualAttack},{pokemon.IndividualDefense},{pokemon.IndividualStamina},{pokemon.CpMultiplier},{pokemon.BattlesAttacked},{pokemon.BattlesDefended},{pokemon.CreationTimeMs},{pokemon.NumUpgrades},{pokemon.AdditionalCpMultiplier},{pokemon.Favorite},{pokemon.Nickname}",
                         dumpFileName);
                 }
             }

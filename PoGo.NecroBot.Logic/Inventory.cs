@@ -83,7 +83,7 @@ namespace PoGo.NecroBot.Logic
 
             var pokemonList =
                 myPokemon.Where(
-                    p => p.DeployedFortId == string.Empty &&
+                    p => p.DeployedFortId == string.Empty && 
                          p.Favorite == 0 && (p.Cp < GetPokemonTransferFilter(p.PokemonId).KeepMinCp ||
                                              PokemonInfo.CalculatePokemonPerfection(p) <
                                              GetPokemonTransferFilter(p.PokemonId).KeepMinIvPercentage))
@@ -110,9 +110,9 @@ namespace PoGo.NecroBot.Logic
                     var familyCandy = pokemonFamilies.Single(x => settings.FamilyId == x.FamilyId);
                     var amountToSkip = GetPokemonTransferFilter(pokemon.Key).KeepMinDuplicatePokemon;
 
-                    if (settings.CandyToEvolve > 0)
+                    if (settings.CandyToEvolve > 0 && _logicSettings.PokemonsToEvolve.Contains(pokemon.Key))
                     {
-                        var amountPossible = familyCandy.Candy_/settings.CandyToEvolve;
+                        var amountPossible = (familyCandy.Candy_ - 1) / (settings.CandyToEvolve - 1);
                         if (amountPossible > amountToSkip)
                             amountToSkip = amountPossible;
                     }
@@ -121,7 +121,7 @@ namespace PoGo.NecroBot.Logic
                     {
                         results.AddRange(pokemonList.Where(x => x.PokemonId == pokemon.Key)
                             .OrderByDescending(PokemonInfo.CalculatePokemonPerfection)
-                            .ThenBy(n => n.StaminaMax)
+                            .ThenByDescending(n => n.Cp)
                             .Skip(amountToSkip)
                             .ToList());
                     }
@@ -129,7 +129,7 @@ namespace PoGo.NecroBot.Logic
                     {
                         results.AddRange(pokemonList.Where(x => x.PokemonId == pokemon.Key)
                             .OrderByDescending(x => x.Cp)
-                            .ThenBy(n => n.StaminaMax)
+                            .ThenByDescending(PokemonInfo.CalculatePokemonPerfection)
                             .Skip(amountToSkip)
                             .ToList());
                     }
@@ -186,6 +186,14 @@ namespace PoGo.NecroBot.Logic
                 .OrderByDescending(x => x.Cp)
                 .FirstOrDefault();
         }
+        public async Task<int> GetStarDust()
+        {
+            var StarDust =await  _client.Player.GetPlayer();
+            var gdrfds = StarDust.PlayerData.Currencies;
+            var SplitStar = gdrfds[1].Amount;
+            return SplitStar;
+
+        }
 
         public async Task<PokemonData> GetHighestPokemonOfTypeByIv(PokemonData pokemon)
         {
@@ -202,7 +210,7 @@ namespace PoGo.NecroBot.Logic
             var pokemons = myPokemon.ToList();
             return pokemons.OrderByDescending(x => x.Cp).ThenBy(n => n.StaminaMax).Take(limit);
         }
-
+     
         public async Task<IEnumerable<PokemonData>> GetHighestsPerfect(int limit)
         {
             var myPokemon = await GetPokemons();
@@ -225,11 +233,20 @@ namespace PoGo.NecroBot.Logic
                 .Where(p => p != null);
         }
 
+        public async Task<int> GetTotalItemCount()
+        {
+            var myItems = (await GetItems()).ToList();
+            int myItemCount = 0;
+            foreach (var myItem in myItems) myItemCount += myItem.Count;
+            return myItemCount;
+        }
+
         public async Task<IEnumerable<ItemData>> GetItemsToRecycle(ISession session)
         {
             var itemsToRecylce = new List<ItemData>();
             var myItems = (await GetItems()).ToList();
 
+<<<<<<< HEAD
             var amountOfPokeballsToKeep = _logicSettings.TotalAmountOfPokebalsToKeep;
             var amountOfPotionsToKeep = _logicSettings.TotalAmountOfPotionsToKeep;
             var amountOfRevivesToKeep = _logicSettings.TotalAmountOfRevivesToKeep;
@@ -276,6 +293,8 @@ namespace PoGo.NecroBot.Logic
                 itemsToRecylce.AddRange(revivesToRecycle);
             }
 
+=======
+>>>>>>> refs/remotes/upstream/master
             var otherItemsToRecylce = myItems
                 .Where(x => _logicSettings.ItemRecycleFilter.Any(f => f.Key == x.ItemId && x.Count > f.Value))
                 .Select(
@@ -308,7 +327,7 @@ namespace PoGo.NecroBot.Logic
 
         private List<ItemData> GetPokeballsToRecycle(ISession session, IReadOnlyList<ItemData> myItems)
         {
-            var amountOfPokeballsToKeep = _logicSettings.TotalAmountOfPokebalsToKeep;
+            var amountOfPokeballsToKeep = _logicSettings.TotalAmountOfPokeballsToKeep;
             if (amountOfPokeballsToKeep < 1)
             {
                 Logger.Write(session.Translation.GetTranslation(TranslationString.PokeballsToKeepIncorrect),
@@ -322,11 +341,25 @@ namespace PoGo.NecroBot.Logic
             return TakeAmountOfItems(allPokeballs, amountOfPokeballsToKeep).ToList();
         }
 
-        public async Task<int> GetPokedexCount()
+        public async Task<UseItemXpBoostResponse> UseLuckyEggConstantly()
         {
-            var hfgds = await _client.Inventory.GetInventory();
+            var UseLuckyEgg = await _client.Inventory.UseItemXpBoost();
+            return UseLuckyEgg;
+        }
+        public async Task<UseIncenseResponse> UseIncenseConstantly()
+        {
+            var UseIncense = await _client.Inventory.UseIncense(ItemId.ItemIncenseOrdinary);
+            return UseIncense;
+        }
 
-            return hfgds.InventoryDelta.InventoryItems.Count(t => t.ToString().ToLower().Contains("pokedex"));
+        public async Task<List<InventoryItem>> GetPokeDexItems()
+        {
+            List<InventoryItem> PokeDex = new List<InventoryItem>();
+            var inventory = await _client.Inventory.GetInventory();
+
+            return (from items in inventory.InventoryDelta.InventoryItems
+                   where items.InventoryItemData?.PokedexEntry != null
+                   select items).ToList();
         }
 
         public async Task<List<Candy>> GetPokemonFamilies()
