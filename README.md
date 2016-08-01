@@ -27,8 +27,7 @@
 
 ## How to use?
 - First read the original Wiki here: https://github.com/NecronomiconCoding/NecroBot/wiki
-- Download entire project
-- Download sub module and copy paste into submodule folder
+- Download entire project - or clone it by github software etc
 - Open the APP with Microsoft Visual Studio 2015
 - Before starting the APP with F5, first go to Settings.cs which is located under PoGo.NecroBot.Logic
 - Make all the settings you wish. Set your location, item counts, IV, evolve etc
