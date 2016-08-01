@@ -246,11 +246,6 @@ namespace PoGo.NecroBot.Logic
             var itemsToRecylce = new List<ItemData>();
             var myItems = (await GetItems()).ToList();
 
-<<<<<<< HEAD
-            var amountOfPokeballsToKeep = _logicSettings.TotalAmountOfPokebalsToKeep;
-            var amountOfPotionsToKeep = _logicSettings.TotalAmountOfPotionsToKeep;
-            var amountOfRevivesToKeep = _logicSettings.TotalAmountOfRevivesToKeep;
-
             var currentAmountOfPokeballs = await GetItemAmountByType(ItemId.ItemPokeBall);
             var currentAmountOfGreatballs = await GetItemAmountByType(ItemId.ItemGreatBall);
             var currentAmountOfUltraballs = await GetItemAmountByType(ItemId.ItemUltraBall);
@@ -269,32 +264,6 @@ namespace PoGo.NecroBot.Logic
                 currentAmountOfPokeballs, currentAmountOfGreatballs, currentAmountOfUltraballs,
                 currentAmountOfMasterballs));
 
-            if (!_logicSettings.ItemRecycleFilter.Any(s => _pokeballs.Contains(s.Key)))
-            {
-                Logger.Write(session.Translation.GetTranslation(TranslationString.CheckingForBallsToRecycle,
-                    amountOfPokeballsToKeep));
-                var pokeballsToRecycle = GetPokeballsToRecycle(session, myItems);
-                itemsToRecylce.AddRange(pokeballsToRecycle);
-            }
-
-            if (!_logicSettings.ItemRecycleFilter.Any(s => _potions.Contains(s.Key)))
-            {
-                Logger.Write(session.Translation.GetTranslation(TranslationString.CheckingForPotionsToRecycle,
-                    amountOfPotionsToKeep));
-                var potionsToRecycle = GetPotionsToRecycle(session, myItems);
-                itemsToRecylce.AddRange(potionsToRecycle);
-            }
-
-            if (!_logicSettings.ItemRecycleFilter.Any(s => _revives.Contains(s.Key)))
-            {
-                Logger.Write(session.Translation.GetTranslation(TranslationString.CheckingForRevivesToRecycle,
-                    amountOfRevivesToKeep));
-                var revivesToRecycle = GetRevivesToRecycle(session, myItems);
-                itemsToRecylce.AddRange(revivesToRecycle);
-            }
-
-=======
->>>>>>> refs/remotes/upstream/master
             var otherItemsToRecylce = myItems
                 .Where(x => _logicSettings.ItemRecycleFilter.Any(f => f.Key == x.ItemId && x.Count > f.Value))
                 .Select(

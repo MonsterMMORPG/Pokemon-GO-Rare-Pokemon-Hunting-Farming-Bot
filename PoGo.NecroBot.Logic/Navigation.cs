@@ -10,11 +10,11 @@ using GeoCoordinatePortable;
 using PoGo.NecroBot.Logic.Utils;
 using PokemonGo.RocketAPI;
 using POGOProtos.Networking.Responses;
-<<<<<<< HEAD
+
 using PoGo.NecroBot.Logic.Logging;
-=======
+
 using System.Linq;
->>>>>>> refs/remotes/upstream/master
+
 
 #endregion
 
@@ -40,26 +40,17 @@ namespace PoGo.NecroBot.Logic
 
         public async Task<PlayerUpdateResponse> Move(GeoCoordinate targetLocation,
             double walkingSpeedInKilometersPerHour, Func<Task<bool>> functionExecutedWhileWalking,
-            CancellationToken cancellationToken, bool disableHumanLikeWalking)
+            CancellationToken cancellationToken, bool disableHumanLikeWalking = false)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-<<<<<<< HEAD
-            var speedInMetersPerSecond = walkingSpeedInKilometersPerHour / 3.6;
-
-            var sourceLocation = new GeoCoordinate(_client.CurrentLatitude, _client.CurrentLongitude);
-
-            var distanceToTarget = LocationUtils.CalculateDistanceInMeters(sourceLocation, targetLocation);
-            Logger.Write($"Distance to target location: {distanceToTarget:0.##} meters. Will take {distanceToTarget / speedInMetersPerSecond:0.##} seconds!", LogLevel.Self, ConsoleColor.DarkGray);
-=======
             if (!disableHumanLikeWalking)
             {
                 var speedInMetersPerSecond = walkingSpeedInKilometersPerHour / 3.6;
 
                 var sourceLocation = new GeoCoordinate(_client.CurrentLatitude, _client.CurrentLongitude);
-                LocationUtils.CalculateDistanceInMeters(sourceLocation, targetLocation);
-                // Logger.Write($"Distance to target location: {distanceToTarget:0.##} meters. Will take {distanceToTarget/speedInMetersPerSecond:0.##} seconds!", LogLevel.Info);
->>>>>>> refs/remotes/upstream/master
+                var distanceToTarget = LocationUtils.CalculateDistanceInMeters(sourceLocation, targetLocation);
+                Logger.Write($"Distance to target location: {distanceToTarget:0.##} meters. Will take {distanceToTarget / speedInMetersPerSecond:0.##} seconds!", LogLevel.Self, ConsoleColor.DarkGray);
 
                 var nextWaypointBearing = LocationUtils.DegreeBearing(sourceLocation, targetLocation);
                 var nextWaypointDistance = speedInMetersPerSecond;
@@ -93,17 +84,10 @@ namespace PoGo.NecroBot.Logic
                         }
                     }
 
-<<<<<<< HEAD
-                nextWaypointDistance = Math.Min(currentDistanceToTarget,
-                    millisecondsUntilGetUpdatePlayerLocationResponse / 1000 * speedInMetersPerSecond);
-                nextWaypointBearing = LocationUtils.DegreeBearing(sourceLocation, targetLocation);
-                waypoint = LocationUtils.CreateWaypoint(sourceLocation, nextWaypointDistance, nextWaypointBearing);
-=======
                     nextWaypointDistance = Math.Min(currentDistanceToTarget,
                         millisecondsUntilGetUpdatePlayerLocationResponse / 1000 * speedInMetersPerSecond);
                     nextWaypointBearing = LocationUtils.DegreeBearing(sourceLocation, targetLocation);
                     waypoint = LocationUtils.CreateWaypoint(sourceLocation, nextWaypointDistance, nextWaypointBearing);
->>>>>>> refs/remotes/upstream/master
 
                     requestSendDateTime = DateTime.Now;
                     result =
@@ -220,5 +204,5 @@ namespace PoGo.NecroBot.Logic
         public event UpdatePositionDelegate UpdatePositionEvent;
     }
 
-    
+
 }

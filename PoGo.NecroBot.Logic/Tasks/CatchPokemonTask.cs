@@ -12,12 +12,12 @@ using POGOProtos.Inventory.Item;
 using POGOProtos.Map.Fort;
 using POGOProtos.Map.Pokemon;
 using POGOProtos.Networking.Responses;
-<<<<<<< HEAD
+
 using PoGo.NecroBot.Logic.Logging;
 
-=======
+
 using System.Threading;
->>>>>>> refs/remotes/upstream/master
+
 
 #endregion
 
@@ -51,7 +51,7 @@ namespace PoGo.NecroBot.Logic.Tasks
             if ((session.LogicSettings.UseBerriesOperator.ToLower().Equals("and") &&
                     pokemonIv >= session.LogicSettings.UseBerriesMinIv &&
                     pokemonCp >= session.LogicSettings.UseBerriesMinCp &&
-                    probability < session.LogicSettings.UseBerriesBelowCatchProbability) || 
+                    probability < session.LogicSettings.UseBerriesBelowCatchProbability) ||
                 (session.LogicSettings.UseBerriesOperator.ToLower().Equals("or") && (
                     pokemonIv >= session.LogicSettings.UseBerriesMinIv ||
                     pokemonCp >= session.LogicSettings.UseBerriesMinCp ||
@@ -81,11 +81,11 @@ namespace PoGo.NecroBot.Logic.Tasks
             var attemptCounter = 1;
             do
             {
-                if ((session.LogicSettings.MaxPokeballsPerPokemon > 0 && 
+                if ((session.LogicSettings.MaxPokeballsPerPokemon > 0 &&
                     attemptCounter > session.LogicSettings.MaxPokeballsPerPokemon))
                     break;
 
-                pokeball = await GetBestBall(session, encounter, probability);
+                pokeball = await GetBestBall(session, encounter, probability, true);
                 if (pokeball == ItemId.ItemUnknown)
                 {
                     session.EventDispatcher.Send(new NoPokeballEvent
@@ -130,7 +130,7 @@ namespace PoGo.NecroBot.Logic.Tasks
                     var profile = await session.Client.Player.GetPlayer();
 
                     evt.Exp = totalExp;
-                    evt.Stardust = profile.PlayerData.Currencies.ToArray()[1].Amount;                  
+                    evt.Stardust = profile.PlayerData.Currencies.ToArray()[1].Amount;
 
                     var pokemonSettings = await session.Inventory.GetPokemonSettings();
                     var pokemonFamilies = await session.Inventory.GetPokemonFamilies();
@@ -193,7 +193,7 @@ namespace PoGo.NecroBot.Logic.Tasks
                      caughtPokemonResponse.Status == CatchPokemonResponse.Types.CatchStatus.CatchEscape);
         }
 
-        private static async Task<ItemId> GetBestBall(ISession session, dynamic encounter, float probability)
+        private static async Task<ItemId> GetBestBall(ISession session, dynamic encounter, float probability, bool blPrint = false)
         {
             var pokemonCp = encounter is EncounterResponse
                 ? encounter.WildPokemon?.PokemonData?.Cp
@@ -212,9 +212,8 @@ namespace PoGo.NecroBot.Logic.Tasks
             var ultraBallsCount = await session.Inventory.GetItemAmountByType(ItemId.ItemUltraBall);
             var masterBallsCount = await session.Inventory.GetItemAmountByType(ItemId.ItemMasterBall);
 
-<<<<<<< HEAD
-
-            Logger.Write($"poke ball ({pokeBallsCount}) , great ball ({greatBallsCount}) , ultra ball ({ultraBallsCount}) , master ball ({masterBallsCount}) ", LogLevel.Self, ConsoleColor.White);
+            if (blPrint == true)
+                Logger.Write($"poke ball ({pokeBallsCount}) , great ball ({greatBallsCount}) , ultra ball ({ultraBallsCount}) , master ball ({masterBallsCount}) ", LogLevel.Self, ConsoleColor.White);
 
             if ((pokeBallsCount + greatBallsCount + ultraBallsCount) < GlobalSettings.irCritical_Ball_Lowest)
             {
@@ -225,25 +224,12 @@ namespace PoGo.NecroBot.Logic.Tasks
                 GlobalSettings.blCriticalBall = false;
             }
 
-
-            if (masterBallsCount > 0 &&
-                ((pokemonCp >= session.LogicSettings.UseMasterBallAboveCp &&
-                  !session.LogicSettings.PokemonToUseMasterball.Any()) ||
-                 session.LogicSettings.PokemonToUseMasterball.Contains(pokemonId)))
-                return ItemId.ItemMasterBall;
-
-            if (ultraBallsCount > 0 && pokemonCp >= session.LogicSettings.UseUltraBallAboveCp)
-                return ItemId.ItemUltraBall;
-            if (greatBallsCount > 0 && pokemonCp >= session.LogicSettings.UseGreatBallAboveCp)
-                return ItemId.ItemGreatBall;
-=======
             if (masterBallsCount > 0 && (
                     (!session.LogicSettings.PokemonToUseMasterball.Any() && (
                         pokemonCp >= session.LogicSettings.UseMasterBallAboveCp ||
                         probability < session.LogicSettings.UseMasterBallBelowCatchProbability)) ||
                     session.LogicSettings.PokemonToUseMasterball.Contains(pokemonId)))
                 return ItemId.ItemMasterBall;
->>>>>>> refs/remotes/upstream/master
 
             if (ultraBallsCount > 0 && (
                     pokemonCp >= session.LogicSettings.UseUltraBallAboveCp ||
@@ -280,7 +266,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
             await session.Client.Encounter.UseCaptureItem(encounterId, ItemId.ItemRazzBerry, spawnPointId);
             berry.Count -= 1;
-            session.EventDispatcher.Send(new UseBerryEvent {BerryType = ItemId.ItemRazzBerry, Count = berry.Count});
+            session.EventDispatcher.Send(new UseBerryEvent { BerryType = ItemId.ItemRazzBerry, Count = berry.Count });
         }
     }
 }

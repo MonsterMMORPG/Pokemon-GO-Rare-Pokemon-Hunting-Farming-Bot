@@ -90,12 +90,9 @@ namespace PoGo.NecroBot.CLI
 
             session.Navigation.UpdatePositionEvent +=
                 (lat, lng) => session.EventDispatcher.Send(new UpdatePositionEvent {Latitude = lat, Longitude = lng});
-<<<<<<< HEAD
 
-
-=======
             session.Navigation.UpdatePositionEvent += Navigation_UpdatePositionEvent;
->>>>>>> refs/remotes/upstream/master
+
             machine.AsyncStart(new VersionCheckState(), session);
 
             if (session.LogicSettings.UseSnipeLocationServer)

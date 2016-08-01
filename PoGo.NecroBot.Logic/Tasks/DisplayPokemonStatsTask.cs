@@ -30,12 +30,10 @@ namespace PoGo.NecroBot.Logic.Tasks
 
         public static async Task Execute(ISession session)
         {
-<<<<<<< HEAD
-       
-=======
+
             var myPokemonFamilies = await session.Inventory.GetPokemonFamilies();
             var myPokeSettings = await session.Inventory.GetPokemonSettings();
->>>>>>> refs/remotes/upstream/master
+
 
             var highestsPokemonCp =
                 await session.Inventory.GetHighestsCp(session.LogicSettings.AmountOfPokemonToDisplayOnStart);

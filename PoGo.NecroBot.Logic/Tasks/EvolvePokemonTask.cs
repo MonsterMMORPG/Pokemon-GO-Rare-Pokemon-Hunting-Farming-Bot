@@ -41,6 +41,8 @@ namespace PoGo.NecroBot.Logic.Tasks
 
                     }
                 }
+
+                await DisplayPokemonStatsTask.WriteHighest(session);
             }
             else
             {
@@ -50,10 +52,10 @@ namespace PoGo.NecroBot.Logic.Tasks
             var pokemonToEvolveTask = await session.Inventory.GetPokemonToEvolve(session.LogicSettings.PokemonsToEvolve);
             var pokemonToEvolve = pokemonToEvolveTask.ToList();
 
-            session.EventDispatcher.Send( new EvolveCountEvent
+            session.EventDispatcher.Send(new EvolveCountEvent
             {
                 Evolves = pokemonToEvolve.Count
-            } );
+            });
 
             if (pokemonToEvolve.Any())
             {

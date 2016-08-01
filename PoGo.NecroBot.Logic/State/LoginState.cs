@@ -132,10 +132,10 @@ namespace PoGo.NecroBot.Logic.State
 
             if (maxTheoreticalItems > session.Profile.PlayerData.MaxItemStorage)
             {
-                Logger.Write(session.Translation.GetTranslation(TranslationString.MaxItemsCombinedOverMaxItemStorage, maxTheoreticalItems, session.Profile.PlayerData.MaxItemStorage), LogLevel.Error);
-                Logger.Write("Press any key to exit, then fix your configuration and run the bot again.", LogLevel.Warning);
-                Console.ReadKey();
-                System.Environment.Exit(1);
+                //Logger.Write(session.Translation.GetTranslation(TranslationString.MaxItemsCombinedOverMaxItemStorage, maxTheoreticalItems, session.Profile.PlayerData.MaxItemStorage), LogLevel.Error);
+                //Logger.Write("Press any key to exit, then fix your configuration and run the bot again.", LogLevel.Warning);
+                //Console.ReadKey();
+                //System.Environment.Exit(1);
             }
 
             return new PositionCheckState();

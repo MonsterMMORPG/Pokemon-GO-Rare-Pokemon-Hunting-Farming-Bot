@@ -166,19 +166,10 @@ namespace PoGo.NecroBot.Logic.Tasks
                     }
                 } while (fortTry < retryNumber - zeroCheck);
                 //Stop trying if softban is cleaned earlier or if 40 times fort looting failed.
-<<<<<<< HEAD
-
-                await Task.Delay(1000, cancellationToken);
-
-                await eggWalker.ApplyDistance(distance, cancellationToken);
-
-                if (++stopsHit % 5 == 0) //TODO: OR item/pokemon bag is full
-=======
 
                 await eggWalker.ApplyDistance(distance, cancellationToken);
 
                 if (++stopsHit >= storeRI) //TODO: OR item/pokemon bag is full //check stopsHit against storeRI random without dividing.
->>>>>>> refs/remotes/upstream/master
                 {
                     storeRI = rc.Next(2, 8); //set new storeRI for new random value
                     stopsHit = 0;
@@ -200,9 +191,7 @@ namespace PoGo.NecroBot.Logic.Tasks
                     {
                         await LevelUpPokemonTask.Execute(session, cancellationToken);
                     }
-<<<<<<< HEAD
 
-=======
                     if (session.LogicSettings.UseLuckyEggConstantly)
                     {
                         await UseLuckyEggConstantlyTask.Execute(session, cancellationToken);
@@ -211,20 +200,17 @@ namespace PoGo.NecroBot.Logic.Tasks
                     {
                         await UseIncenseConstantlyTask.Execute(session, cancellationToken);
                     }
->>>>>>> refs/remotes/upstream/master
+
                     if (session.LogicSettings.TransferDuplicatePokemon)
                     {
                         await TransferDuplicatePokemonTask.Execute(session, cancellationToken);
                     }
 
-<<<<<<< HEAD
                     if (session.LogicSettings.EvolveAllPokemonWithEnoughCandy || session.LogicSettings.EvolveAllPokemonAboveIv)
                     {
                         await EvolvePokemonTask.Execute(session, cancellationToken);
                     }
 
-=======
->>>>>>> refs/remotes/upstream/master
                     if (session.LogicSettings.RenamePokemon)
                     {
                         await RenamePokemonTask.Execute(session, cancellationToken);
@@ -247,12 +233,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
         private static async Task<List<FortData>> GetPokeStops(ISession session)
         {
-<<<<<<< HEAD
-            string srCurrentTimeStamp = DateTime.UtcNow.ToUnixTime().ToString();
-            var mapObjects = await session.Client.Map.GetMapObjects();
-=======
             var mapObjects = await session.Navigation.GetMapObjects();
->>>>>>> refs/remotes/upstream/master
 
             var pokeStops2 = mapObjects.MapCells.SelectMany(i => i.Forts).ToList();
 
@@ -394,7 +375,7 @@ namespace PoGo.NecroBot.Logic.Tasks
 
                     hsGonaLocations.Add(srMinDistLoc);
 
-                    await session.Navigation.HumanLikeWalking(new GeoCoordinate(dblMinDistLat, dblMinDistLng),
+                    await session.Navigation.Move(new GeoCoordinate(dblMinDistLat, dblMinDistLng),
                         session.LogicSettings.WalkingSpeedInKilometerPerHour,
                         async () =>
                         {
@@ -429,7 +410,7 @@ namespace PoGo.NecroBot.Logic.Tasks
         {
             if (GlobalSettings.lstPokeStopLocations.Count < 1)
             {
-                await session.Navigation.HumanLikeWalking(new GeoCoordinate(GlobalSettings.Default.DefaultLatitude, GlobalSettings.Default.DefaultLongitude),
+                await session.Navigation.Move(new GeoCoordinate(GlobalSettings.Default.DefaultLatitude, GlobalSettings.Default.DefaultLongitude),
 session.LogicSettings.WalkingSpeedInKilometerPerHour,
 async () =>
 {
@@ -456,7 +437,7 @@ async () =>
             double dblLng = Convert.ToDouble(GlobalSettings.lstPokeStopLocations[GlobalSettings.irLastPokeStopIndex].Split(':')[1]);
             GlobalSettings.irLastPokeStopIndex++;
 
-            await session.Navigation.HumanLikeWalking(new GeoCoordinate(dblLat, dblLng),
+            await session.Navigation.Move(new GeoCoordinate(dblLat, dblLng),
       session.LogicSettings.WalkingSpeedInKilometerPerHour,
       async () =>
       {
