@@ -42,7 +42,7 @@
 - In PokemonGo Map config file, you only have to put auth-service, username, password and location parameters rest is automatic
 - Once you have installed and generated config file, double click runserver and it will start farming
 - I suggest you to use latest development branch with multiple accounts. Here an example start command multiple accounts
-- c: & cd "c:\map" & python runserver.py  -a ptc -u ac0 -p pw0  -a ptc -u ac1 -p pw1  -a ptc -u ac2 -p pw2  -a ptc -u ac3 -p pw3  -a ptc -u ac4 -p pw4  -st 20 -k AIzaSyBzwb-23b2kVH8fA7OWsh0bvHUyqdI_bw8 -l "36.80204, 34.63328" -sd 7
+- c: & cd "c:\map" & python runserver.py  -a ptc -u ac0 -p pw0  -a ptc -u ac1 -p pw1  -a ptc -u ac2 -p pw2  -a ptc -u ac3 -p pw3  -a ptc -u ac4 -p pw4  -st 20 -k sadas-mapapi -l "36.80204, 34.63328" -sd 7
 - *
 - Now you have to point your PokemonGo Map installation folder in our application
 - In Settings.cs file change ```srPokemonGoMap_Directory``` variable to your installation folder 
