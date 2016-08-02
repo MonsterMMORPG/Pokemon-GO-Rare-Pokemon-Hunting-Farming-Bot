@@ -443,7 +443,7 @@ namespace PoGo.NecroBot.Logic
         public static GlobalSettings Default => new GlobalSettings();
 
         public static string srSettingsDirectory = @"D:\74 pokemon go\settings\";
-        public static string srPokemonGoMap_Directory = @"D:\74 pokemon go\PokemonGo-Map-master\";
+        public static string srPokemonGoMap_Directory = @"C:\map\";
 
         public static List<string> lstPokeStopLocations = new List<string> { };
         public static int irLastPokeStopIndex = 0;
