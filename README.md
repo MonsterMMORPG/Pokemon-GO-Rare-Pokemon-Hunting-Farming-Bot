@@ -87,9 +87,9 @@
 
 ![Pokemon Go Bot Screen!](Static/pokemon-go-bot.png)
 
-## Screenshot of 30 miners running at the same time to scan the farming area
+## Screenshot of 200 miners running at the same time to scan the farming area with 20 second delay and 33 step radius
 
-![Pokemon GO 30 Map Miners!](Static/30-account-pokemon-map-farm.png)
+![Pokemon GO 200 Map Miners!](Static/30-account-pokemon-map-farm.png)
 
 <p>Feel free to ask any questions with opening issues</p>
 
