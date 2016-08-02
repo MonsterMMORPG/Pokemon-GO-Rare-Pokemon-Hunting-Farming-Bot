@@ -1,5 +1,5 @@
 # Original fork [read description and FAQ there!] : https://github.com/NecronomiconCoding/NecroBot
-# Lvl 32+ Pokemon GO Accounts Giveaway Events: http://www.monstermmorpg.com/Pokemon-GO-Giveaways 
+# Lvl 34+ Pokemon GO Accounts Giveaway Events: http://www.monstermmorpg.com/Pokemon-GO-Giveaways 
 # www.pokemonpets.com free Pokemon MMO RPG
 [![Pokemon Style Monster Game MonsterMMORPG](Static/pokemon-mmo-rpg-online-game-pokemonpets-battle.gif)](http://www.pokemonpets.com/Register)
 # www.monstermmorpg.com free Monster MMO RPG
