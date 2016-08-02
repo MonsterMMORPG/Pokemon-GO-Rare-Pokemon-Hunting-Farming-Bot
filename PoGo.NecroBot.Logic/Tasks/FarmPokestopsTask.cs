@@ -299,7 +299,7 @@ namespace PoGo.NecroBot.Logic.Tasks
         public static async Task ExeCuteMyFarm(ISession session, CancellationToken cancellationToken)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
-
+            blWentAnyLoc = false;
             var vrList = funcReturnPokeLoc();
 
             Logger.Write("Location found count " + vrList.Count, LogLevel.Self, ConsoleColor.DarkGray);
