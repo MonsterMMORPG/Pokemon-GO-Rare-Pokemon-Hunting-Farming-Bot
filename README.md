@@ -89,7 +89,7 @@
 
 ## Screenshot of 30 miners running at the same time to scan the farming area
 
-![Pokemon GO 30 Map Miners!](30-account-pokemon-map-farm.png)
+![Pokemon GO 30 Map Miners!](Static/30-account-pokemon-map-farm.png)
 
 <p>Feel free to ask any questions with opening issues</p>
 
